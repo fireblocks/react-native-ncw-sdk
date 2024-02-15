@@ -1,0 +1,318 @@
+{
+  "project_info": {
+    "project_number": "127498444203",
+    "project_id": "fireblocks-sdk-demo",
+    "storage_bucket": "fireblocks-sdk-demo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127498444203:android:9851cccbb1c805832e46ee",
+        "android_client_info": {
+          "package_name": "com.fireblocks.ncwdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127498444203-62l9g74oreskbc6mgbma6fff25vsjfoc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo",
+            "certificate_hash": "fe4711d2169562f614368aaad389c5f035d0f073"
+          }
+        },
+        {
+          "client_id": "127498444203-jdab2onq3gi3qtjs5e95ttis2kkoshj2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo",
+            "certificate_hash": "e3e421d3b4754646e0cc833509a69a09141ec333"
+          }
+        },
+        {
+          "client_id": "127498444203-l6m2ig3e6u7h3p9c4hd6l7d73vvs9oj6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo",
+            "certificate_hash": "8c3acf33c4b61e977e08bb9820a3044d15bfc7f8"
+          }
+        },
+        {
+          "client_id": "127498444203-lt8llhccjsie3hgmalt8mmqg998fuucb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo",
+            "certificate_hash": "df3784a3fc8794d7c8ea4a13c6e70465bc4387de"
+          }
+        },
+        {
+          "client_id": "127498444203-qli1cbctj58grmrefo52o6c69s2tqd92.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo",
+            "certificate_hash": "9857262836522469d9177c657222f994555a6d87"
+          }
+        },
+        {
+          "client_id": "127498444203-sd3nc7ridp417vfdvi4db15cemuuqo7m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo",
+            "certificate_hash": "17b48304e94a794970b4c6d361eb3a1b6612f01b"
+          }
+        },
+        {
+          "client_id": "127498444203-cpgvmmrd4mu697kgtkjvi4ef0tn01gha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-SVqMNWtKh2atevurEQDjj7LQ5ZU6YFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127498444203-37ir46ab74hacrpg630emicgp5q1mtna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127498444203-lahs8s8cd6nvc514g07dl4ctuomdk3b9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fireblocks.ncw.demo.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127498444203:android:bafae43772b2b8982e46ee",
+        "android_client_info": {
+          "package_name": "com.fireblocks.ncwdemo.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127498444203-0s6dth8s19dt5ec2s9qpsfmlmnnko5lv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo.dev",
+            "certificate_hash": "9857262836522469d9177c657222f994555a6d87"
+          }
+        },
+        {
+          "client_id": "127498444203-51rinhmf4msr8lrih0bipvvik7381vq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo.dev",
+            "certificate_hash": "8c3acf33c4b61e977e08bb9820a3044d15bfc7f8"
+          }
+        },
+        {
+          "client_id": "127498444203-are572a73gq3qs0j14ful53c0bitinco.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo.dev",
+            "certificate_hash": "fe4711d2169562f614368aaad389c5f035d0f073"
+          }
+        },
+        {
+          "client_id": "127498444203-iikhfs3m5j07oldren5mngmii18tad9h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo.dev",
+            "certificate_hash": "df3784a3fc8794d7c8ea4a13c6e70465bc4387de"
+          }
+        },
+        {
+          "client_id": "127498444203-r27fmgot5ukrs69asd1nll1hkd6cno02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.ncwdemo.dev",
+            "certificate_hash": "e3e421d3b4754646e0cc833509a69a09141ec333"
+          }
+        },
+        {
+          "client_id": "127498444203-cpgvmmrd4mu697kgtkjvi4ef0tn01gha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-SVqMNWtKh2atevurEQDjj7LQ5ZU6YFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127498444203-37ir46ab74hacrpg630emicgp5q1mtna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127498444203-lahs8s8cd6nvc514g07dl4ctuomdk3b9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fireblocks.ncw.demo.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127498444203:android:fa7384a0bc5f04a22e46ee",
+        "android_client_info": {
+          "package_name": "com.fireblocks.sdkdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127498444203-4em23ovm4ta5gulgfrp49q84gcm1f7nl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.sdkdemo",
+            "certificate_hash": "e3e421d3b4754646e0cc833509a69a09141ec333"
+          }
+        },
+        {
+          "client_id": "127498444203-mhmdb52ekf5oh7hap9qt2if96atn3ho0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.sdkdemo",
+            "certificate_hash": "8c3acf33c4b61e977e08bb9820a3044d15bfc7f8"
+          }
+        },
+        {
+          "client_id": "127498444203-rvkjbb0edtvnma7ubm7u2jkcsfqtvnh0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.sdkdemo",
+            "certificate_hash": "e7604800cfd49b91e5b3bb9e130bfd17aaca426d"
+          }
+        },
+        {
+          "client_id": "127498444203-cpgvmmrd4mu697kgtkjvi4ef0tn01gha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-SVqMNWtKh2atevurEQDjj7LQ5ZU6YFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127498444203-37ir46ab74hacrpg630emicgp5q1mtna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127498444203-lahs8s8cd6nvc514g07dl4ctuomdk3b9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fireblocks.ncw.demo.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127498444203:android:ab3f1a3a14829d1a2e46ee",
+        "android_client_info": {
+          "package_name": "com.fireblocks.sdkdemo.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127498444203-8go05p0tersaghphvq7rq75328pnh77m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.sdkdemo.dev",
+            "certificate_hash": "e3e421d3b4754646e0cc833509a69a09141ec333"
+          }
+        },
+        {
+          "client_id": "127498444203-cpgvmmrd4mu697kgtkjvi4ef0tn01gha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-SVqMNWtKh2atevurEQDjj7LQ5ZU6YFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127498444203-37ir46ab74hacrpg630emicgp5q1mtna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127498444203-lahs8s8cd6nvc514g07dl4ctuomdk3b9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fireblocks.ncw.demo.dev"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:127498444203:android:57f40cb0df543a572e46ee",
+        "android_client_info": {
+          "package_name": "com.fireblocks.sdkdemo.rn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "127498444203-8embai2bpdvlrps92bqspos0kbolo7t6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fireblocks.sdkdemo.rn",
+            "certificate_hash": "114f917fc5a8170a016ab273ee694a5fdfb6cbc2"
+          }
+        },
+        {
+          "client_id": "127498444203-cpgvmmrd4mu697kgtkjvi4ef0tn01gha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-SVqMNWtKh2atevurEQDjj7LQ5ZU6YFc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "127498444203-37ir46ab74hacrpg630emicgp5q1mtna.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "127498444203-lahs8s8cd6nvc514g07dl4ctuomdk3b9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.fireblocks.ncw.demo.dev"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

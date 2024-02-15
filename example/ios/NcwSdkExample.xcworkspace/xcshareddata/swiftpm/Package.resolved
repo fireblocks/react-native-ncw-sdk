@@ -1,0 +1,15 @@
+{
+  "originHash" : "b5bda7c0e29ccb5c9481282716a90b1d6710f5d4e94b8a11e2aaa41a3d227039",
+  "pins" : [
+    {
+      "identity" : "ncw-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/fireblocks/ncw-ios-sdk",
+      "state" : {
+        "branch" : "2.3.6",
+        "revision" : "be7dc388374a6092048d2980fc5b1c1ee2afbad9"
+      }
+    }
+  ],
+  "version" : 3
+}

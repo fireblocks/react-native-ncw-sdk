@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>127498444203-0s6dth8s19dt5ec2s9qpsfmlmnnko5lv.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD-TK-pJob6KSKTR1K9T63mB32_nEoX2qw</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fireblocks.ncw.demo.rn</string>
+	<key>CLIENT_ID</key>
+	<string>127498444203-ovplbl75l57llur20n12lai8gij50594.apps.googleusercontent.com</string>
+	<key>GCM_SENDER_ID</key>
+	<string>127498444203</string>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:127498444203:ios:ac22a4587d65e1b22e46ee</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<false/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>PROJECT_ID</key>
+	<string>fireblocks-sdk-demo</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.127498444203-ovplbl75l57llur20n12lai8gij50594</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fireblocks-sdk-demo.appspot.com</string>
+</dict>
+</plist>
