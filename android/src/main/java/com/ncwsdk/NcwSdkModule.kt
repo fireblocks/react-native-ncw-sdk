@@ -66,10 +66,17 @@ internal class JoinWalletHandler(
 class NcwSdkModule internal constructor(context: ReactApplicationContext) :
     NativeNcwSdkSpec(context) {
 
+    companion object {
+        private const val TAG = "Fireblocks:NCW"
+
+        const val NAME = "NcwSdk"
+
+        private val initializedDevices: MutableSet<String> = HashSet()
+    }
+
     private var listenerCount = 0
     private var operationCount = 0
     private val operations: MutableMap<Int, (ReadableMap) -> Unit> = HashMap()
-    private val initializedDevices: MutableSet<String> = HashSet()
 
     private fun sendEvent(
       reactContext: ReactContext,
@@ -123,7 +130,7 @@ class NcwSdkModule internal constructor(context: ReactApplicationContext) :
     }
 
     override fun initialize(deviceId: String, promise: Promise) {
-        if (initializedDevices.contains(deviceId)) {
+        if (NcwSdkModule.initializedDevices.contains(deviceId)) {
             Log.d(TAG, "Device already initialized: $deviceId")
             promise.resolve(null)
             return
@@ -381,7 +388,7 @@ class NcwSdkModule internal constructor(context: ReactApplicationContext) :
                 keyStorage,
                 options.build()
             )
-            initializedDevices.add(deviceId)
+            NcwSdkModule.initializedDevices.add(deviceId)
             promise.resolve(null)
         } catch (e: Exception) {
             promise.reject("Error", e.message)
@@ -670,11 +677,5 @@ class NcwSdkModule internal constructor(context: ReactApplicationContext) :
             promise.reject("Error", e.message)
             return
         }
-    }
-
-    companion object {
-        private const val TAG = "Fireblocks:NCW"
-
-        const val NAME = "NcwSdk"
     }
 }
