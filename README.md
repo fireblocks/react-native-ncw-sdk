@@ -5,7 +5,6 @@ Fireblocks NCW SDK bridge for React Native
 ## Installation
 
 ```sh
-// Not yet working
 npm install @fireblocks/react-native-ncw-sdk
 ```
 

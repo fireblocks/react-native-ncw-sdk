@@ -283,6 +283,7 @@ export async function FireblocksNCWFactory(options: IFireblocksNCWOptions): Prom
             return keys;
         },
         exportFullKeys: function (chaincode: string, cloudKeyShares: Map<string, string[]>): Promise<IFullKey[]> {
+            console.error(JSON.stringify({chaincode, cloudKeyShares}));
             throw new Error('Function not implemented.');
         },
         deriveAssetKey: function (extendedPrivateKey: string, coinType: number, account: number, change: number, index: number): string {
