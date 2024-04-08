@@ -1,5 +1,5 @@
 {
-  "name": "react-native-ncw-sdk",
+  "name": "@fireblocks/test-react-native-ncw-sdk",
   "version": "0.1.0",
   "description": "Fireblocks NCW SDK bridge for React Native",
   "main": "lib/commonjs/index",
@@ -11,7 +11,7 @@
     "src",
     "lib",
     "android",
-    "ios",
+  "ios",
     "cpp",
     "*.podspec",
     "!ios/build",
