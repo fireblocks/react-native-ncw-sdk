@@ -51,6 +51,8 @@ GEM
     cocoapods-plugins (1.0.0)
       nap
     cocoapods-search (1.0.1)
+    cocoapods-spm (0.1.1)
+      xcodeproj (>= 1.23.0)
     cocoapods-trunk (1.6.0)
       nap (>= 0.8, < 2.0)
       netrc (~> 0.11)
@@ -95,6 +97,7 @@ PLATFORMS
 DEPENDENCIES
   activesupport (>= 6.1.7.5, < 7.1.0)
   cocoapods (>= 1.13, < 1.15)
+  cocoapods-spm
 
 RUBY VERSION
    ruby 3.2.2p53

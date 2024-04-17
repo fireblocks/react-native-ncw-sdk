@@ -3,35 +3,6 @@ require "json"
 package = JSON.parse(File.read(File.join(__dir__, "package.json")))
 folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32'
 
-# TODO: figure out why 'cocoapods-spm' doesn't work and remove this workaround
-def $RNNCWSDK.post_install(installer)
-    # add SPM dependency
-    project = installer.pods_project
-    url =  "https://github.com/fireblocks/ncw-ios-sdk.git"
-    product_name = "FireblocksSDK"
-    requirement = { :kind => "upToNextMajorVersion", :minimumVersion => "2.3.6" }
-
-    pkg_class = Xcodeproj::Project::Object::XCRemoteSwiftPackageReference
-    ref_class = Xcodeproj::Project::Object::XCSwiftPackageProductDependency
-    pkg = project.root_object.package_references.find { |p| p.class == pkg_class && p.repositoryURL == url }
-    target = project.targets.find { |t| t.name == "react-native-ncw-sdk"}
-
-    if !pkg
-      pkg = project.new(pkg_class)
-      pkg.repositoryURL = url
-      pkg.requirement = requirement
-      project.root_object.package_references << pkg
-    end
-
-    ref = target.package_product_dependencies.find { |r| r.class == ref_class && r.package == pkg && r.product_name == product_name }
-    if !ref
-      ref = project.new(ref_class)
-      ref.package = pkg
-      ref.product_name = product_name
-      target.package_product_dependencies << ref
-    end
-  end
-
 Pod::Spec.new do |s|
   s.name         = "react-native-ncw-sdk"
   s.version      = package["version"]
@@ -45,8 +16,7 @@ Pod::Spec.new do |s|
 
   s.source_files = "ios/**/*.{h,m,mm,swift}"
 
-  # TODO: fix 'cocoapods-spm'
-  # s.spm_dependency "FireblocksSDK/FireblocksSDK"
+  s.spm_dependency "FireblocksSDK/FireblocksSDK"
 
   # Swift/Objective-C compatibility
   s.pod_target_xcconfig = {
