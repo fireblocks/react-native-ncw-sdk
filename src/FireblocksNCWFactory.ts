@@ -282,7 +282,7 @@ export async function FireblocksNCWFactory(options: IFireblocksNCWOptions): Prom
             const keys = await NcwSdk.takeover(deviceId);
             return keys;
         },
-        exportFullKeys: function (chaincode: string, cloudKeyShares: Map<string, string[]>): Promise<IFullKey[]> {
+        exportFullKeys: function (_chaincode: string, _cloudKeyShares: Map<string, string[]>): Promise<IFullKey[]> {
             throw new Error('Function not implemented.');
         },
         deriveAssetKey: function (extendedPrivateKey: string, coinType: number, account: number, change: number, index: number): string {

@@ -2,7 +2,7 @@ import type { TurboModule } from 'react-native';
 import { TurboModuleRegistry } from 'react-native';
 
 // TOOD: consider import type from ncw-js-sdk
-import type { IFullKey, IJoinWalletDescriptor, IKeyBackupResult, IKeyDescriptor, IMessagesHandler, ITransactionSignature } from "./interfaces";
+import type { IFullKey, IJoinWalletDescriptor, IKeyBackupResult, IKeyDescriptor } from "./interfaces";
 import type { TMPCAlgorithm, TTransactionSignatureStatus } from './types';
 
 export interface Response {
