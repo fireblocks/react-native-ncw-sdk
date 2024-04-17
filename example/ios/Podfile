@@ -54,9 +54,6 @@ target 'NcwSdkExample' do
   end
 
   post_install do |installer|
-    # TODO: remove after fixing 'cocoapods-spm'
-    # $RNNCWSDK.post_install(installer)
-
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
