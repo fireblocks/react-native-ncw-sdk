@@ -1,6 +1,6 @@
 # @fireblocks/react-native-ncw-sdk
 
- NCW SDK Native bridge
+Fireblocks NCW SDK bridge for React Native
 
 ## Installation
 
@@ -8,15 +8,40 @@
 npm install @fireblocks/react-native-ncw-sdk
 ```
 
+### iOS additional setup
+1. Edit the following line to your app's `Podfile`
+
+```rb
+  post_install do |installer|
+    $RNNCWSDK.post_install(installer) # <--- add this line
+```
+
+2. Install pod dependencies:
+
+```sh
+cd example/ios && bundle exec pod install
+```
+
 ## Usage
 
+
 ```js
-import { multiply } from '@fireblocks/react-native-ncw-sdk';
+import { FireblocksNCWFactory } from '@fireblocks/react-native-ncw-sdk';
 
 // ...
 
-const result = await multiply(3, 7);
+const fireblocksNCW = await FireblocksNCWFactory({
+    env: "sandbox", // or "prod" etc
+    logLevel: "INFO",
+    deviceId,
+    messagesHandler,
+    eventsHandler,
+    secureStorageProvider,
+});
 ```
+
+## Example
+[Example Project](example)
 
 ## Contributing
 
