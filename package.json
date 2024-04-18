@@ -1,7 +1,7 @@
 {
   "name": "@fireblocks/react-native-ncw-sdk",
   "version": "0.1.0",
-  "description": " NCW SDK Native bridge",
+  "description": "NCW SDK Native bridge",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -43,7 +43,7 @@
     "type": "git",
     "url": "git+https://github.com/fireblocks/react-native-ncw-sdk.git"
   },
-  "author": "Amit Perelstein <amper@fireblocks.com> (https://github.com/fireblocks/react-native-ncw-sdk)",
+  "author": "Amit Perelstein <amper@fireblocks.com> (https://www.fireblocks.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/fireblocks/react-native-ncw-sdk/issues"

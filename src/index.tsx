@@ -13,7 +13,7 @@ const ReactNativeNcwSdkModule = isTurboModuleEnabled
   ? require('./NativeReactNativeNcwSdk').default
   : NativeModules.ReactNativeNcwSdk;
 
-const ReactNativeNcwSdk = ReactNativeNcwSdkModule
+export const ReactNativeNcwSdk = ReactNativeNcwSdkModule
   ? ReactNativeNcwSdkModule
   : new Proxy(
       {},
@@ -24,6 +24,7 @@ const ReactNativeNcwSdk = ReactNativeNcwSdkModule
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return ReactNativeNcwSdk.multiply(a, b);
-}
+export * from "./interfaces";
+export * from "./types";
+
+export { FireblocksNCWFactory } from "./FireblocksNCWFactory";

@@ -1,31 +1,48 @@
-import * as React from 'react';
+import React from "react";
+// import { useAppStore } from "./AppStore";
+// import { Login } from "./auth/Login";
+// import { AppContent } from "./components/AppContent";
+// import { NavBar } from "./components/ui/NavBar";
+import { SafeAreaView, ScrollView, StatusBar, StyleSheet, useColorScheme } from "react-native";
+import { useAppStore } from "./AppStore";
+import { AppContent } from "./components/AppContent";
+import { Login } from "./auth/Login";
+import { AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
+import { NavBar } from "./components/ui/NavBar";
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from '@fireblocks/react-native-ncw-sdk';
-
-export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
-
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+export function App(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
+  const { loggedUser } = useAppStore();
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+      />
+      <AutocompleteDropdownContextProvider>
+            <NavBar/>
+              {loggedUser ? 
+                <ScrollView style={styles.scrollView}>
+                  <AppContent />
+                </ScrollView> : 
+                <Login />
+              }
+      </AutocompleteDropdownContextProvider>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    // paddingTop: StatusBar.currentHeight,
   },
-  box: {
-    width: 60,
-    height: 60,
-    marginVertical: 20,
+  scrollView: {
+    marginHorizontal: 10,
+  },
+  text: {
+    fontSize: 42,
   },
 });
+
+export default App;

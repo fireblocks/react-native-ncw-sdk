@@ -99,6 +99,16 @@ android {
 repositories {
   mavenCentral()
   google()
+
+   maven {
+       url = "https://maven.fireblocks.io/android-sdk/maven"
+      name = "android-sdk"
+      credentials(HttpHeaderCredentials) {
+        name = "Deploy-Token"
+        value = "-fU8ijmuPohHaqDBgpaT"
+      }
+      authentication {  header(HttpHeaderAuthentication) }
+  }
 }
 
 def kotlin_version = getExtOrDefault("kotlinVersion")
@@ -109,6 +119,7 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  implementation "com.fireblocks.sdk:ncw:2.3.0"
 }
 
 if (isNewArchitectureEnabled()) {

@@ -1,12 +1,12 @@
+//
+//  ReactNativeNcwSdk.h
+//  Pods
+//
+//  Created by Amit Perelstein on 31/03/2024.
+//
 
-#ifdef RCT_NEW_ARCH_ENABLED
-#import "RNReactNativeNcwSdkSpec.h"
+#ifndef ReactNativeNcwSdk_h
+#define ReactNativeNcwSdk_h
 
-@interface ReactNativeNcwSdk : NSObject <NativeReactNativeNcwSdkSpec>
-#else
-#import <React/RCTBridgeModule.h>
 
-@interface ReactNativeNcwSdk : NSObject <RCTBridgeModule>
-#endif
-
-@end
+#endif /* ReactNativeNcwSdk_h */

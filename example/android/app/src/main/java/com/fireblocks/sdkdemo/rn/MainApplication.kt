@@ -1,4 +1,4 @@
-package com.reactnativencwsdkexample
+package com.fireblocks.sdkdemo.rn
 
 import android.app.Application
 import com.facebook.react.PackageList

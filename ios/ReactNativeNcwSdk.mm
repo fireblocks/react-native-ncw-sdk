@@ -1,18 +1,36 @@
-#import "ReactNativeNcwSdk.h"
+#import <React/RCTEventEmitter.h>
 
-@implementation ReactNativeNcwSdk
-RCT_EXPORT_MODULE()
+#ifdef RCT_NEW_ARCH_ENABLED
+#import "RNReactNativeNcwSdkSpec.h"
+@interface RCT_EXTERN_MODULE(ReactNativeNcwSdk, NSObject<NativeReactNativeNcwSdkSpec>)
+#else
+#import <React/RCTBridgeModule.h>
 
-// Example method
-// See // https://reactnative.dev/docs/native-modules-ios
-RCT_EXPORT_METHOD(multiply:(double)a
-                  b:(double)b
-                  resolve:(RCTPromiseResolveBlock)resolve
-                  reject:(RCTPromiseRejectBlock)reject)
+@interface RCT_EXTERN_MODULE(ReactNativeNcwSdk, NSObject<RCTBridgeModule>)
+#endif
+
+RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(getPhysicalDeviceId)
+RCT_EXTERN_METHOD(initialize: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getKeysStatus: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(generateMPCKeys: (NSString)deviceId withAlgorithms:(NSArray)algorithms withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(backupKeys: (NSString)deviceId withPassphrase:(NSString)passphrase withPassphraseId:(NSString)passphraseId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(recoverKeys: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(takeover: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(deriveAssetKey: (NSString)deviceId withExtendedPrivateKey:(NSString)extendedPrivateKey withBip44DerivationParams:(NSDictionary)bip44DerivationParams)
+RCT_EXTERN_METHOD(signTransaction: (NSString)deviceId withTxId:(NSString)txId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(getURLForLogFiles: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(sendLogs: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(handleResponse: (NSDictionary)response
+              withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(requestJoinExistingWallet: (NSString)deviceId
+              withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(stopJoinWallet: (NSString)deviceId)
+RCT_EXTERN_METHOD(approveJoinWalletRequest: (NSString)deviceId withRequestId:(NSString)requestId
+              withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+
+- (dispatch_queue_t)methodQueue
 {
-    NSNumber *result = @(a * b);
-
-    resolve(result);
+  return dispatch_get_main_queue();
 }
 
 // Don't compile this code when we build for the old architecture.

@@ -1,4 +1,4 @@
-package com.reactnativencwsdkexample
+package com.fireblocks.sdkdemo.rn
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

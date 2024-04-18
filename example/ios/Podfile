@@ -28,6 +28,13 @@ end
 target 'ReactNativeNcwSdkExample' do
   config = use_native_modules!
 
+  # spm_pkg "FireblocksSDK", :url => "https://github.com/fireblocks/ncw-ios-sdk.git", :tag => "2.4.0"
+
+  pod 'Firebase', :modular_headers => true
+  pod 'FirebaseCore', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  $RNFirebaseAsStaticFramework = true
+
   use_react_native!(
     :path => config[:reactNativePath],
     # Enables Flipper.
@@ -45,6 +52,8 @@ target 'ReactNativeNcwSdkExample' do
   end
 
   post_install do |installer|
+    $RNNCWSDK.post_install(installer)
+
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
     react_native_post_install(
       installer,
