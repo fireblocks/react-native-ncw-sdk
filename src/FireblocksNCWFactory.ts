@@ -1,5 +1,5 @@
 import { type EmitterSubscription, NativeEventEmitter, NativeModules } from 'react-native';
-import { NcwSdk, type IPassphraseResolver, type TEvent, type TMPCAlgorithm, type IJoinWalletHandler, type IFireblocksNCWOptions, type IFireblocksNCW, type IFullKey, type IJoinWalletDescriptor, type IKeyBackupResult, type IKeyDescriptor, type ITransactionSignature } from "react-native-ncw-sdk";
+import { NcwSdk, type IFireblocksNCWOptions, type IFireblocksNCW, type IFullKey, type IJoinWalletDescriptor, type IJoinWalletHandler, type IKeyBackupResult, type IKeyDescriptor, type IPassphraseResolver, type ITransactionSignature, type TEvent, type TMPCAlgorithm } from '.';
 
 interface BaseOperationEvent {
     opId: number;

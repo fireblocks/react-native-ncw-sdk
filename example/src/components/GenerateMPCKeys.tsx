@@ -9,7 +9,7 @@ import { Text, View } from "react-native";
 import { Bar } from 'react-native-progress';
 import { QRScanner } from "./QRScanner";
 
-import type { TKeyStatus } from "react-native-ncw-sdk";
+import type { TKeyStatus } from "@fireblocks/test-react-native-ncw-sdk";
 
 export const GenerateMPCKeys: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);

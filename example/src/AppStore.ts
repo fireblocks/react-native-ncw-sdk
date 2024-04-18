@@ -8,9 +8,9 @@ import { PasswordEncryptedLocalStorage } from "./services/PasswordEncryptedLocal
 import type { IAuthManager } from "./auth/IAuthManager";
 import { FirebaseAuthManager } from "./auth/FirebaseAuthManager";
 import { decode, version } from "js-base64";
-import type { IEventsHandler, IFireblocksNCW, IJoinWalletEvent, IKeyBackupEvent, IKeyDescriptor, IKeyRecoveryEvent, IMessagesHandler } from "react-native-ncw-sdk";
-import type { TEvent, TMPCAlgorithm, TEnv } from "react-native-ncw-sdk";
-import { FireblocksNCWFactory } from "react-native-ncw-sdk";
+import type { IEventsHandler, IFireblocksNCW, IJoinWalletEvent, IKeyBackupEvent, IKeyDescriptor, IKeyRecoveryEvent, IMessagesHandler } from "@fireblocks/test-react-native-ncw-sdk";
+import type { TEvent, TMPCAlgorithm, TEnv } from "@fireblocks/test-react-native-ncw-sdk";
+import { FireblocksNCWFactory } from "@fireblocks/test-react-native-ncw-sdk";
 import { ACCESSIBLE, ACCESS_CONTROL, type Options, getGenericPassword, setGenericPassword } from "react-native-keychain";
 import { randomPassPhrase } from "./services/randomPassPhrase";
 

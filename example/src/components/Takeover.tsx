@@ -5,7 +5,7 @@ import { Card } from "./ui/Card";
 import { ErrorToast } from "./ui/ErrorToast";
 import { DeriveAssetsList } from "./DeriveAssetsList";
 import { View } from "react-native";
-import type { IFullKey } from "react-native-ncw-sdk";
+import type { IFullKey } from "@fireblocks/test-react-native-ncw-sdk";
 
 export const Takeover: React.FC = () => {
   const { takeover } = useAppStore();

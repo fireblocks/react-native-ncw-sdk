@@ -1,4 +1,4 @@
-import type { ISecureStorageProvider, TReleaseSecureStorageCallback } from "react-native-ncw-sdk";
+import type { ISecureStorageProvider, TReleaseSecureStorageCallback } from "@fireblocks/test-react-native-ncw-sdk";
 import { MMKV } from 'react-native-mmkv'
 
 export type GetUserPasswordCallback = () => Promise<string>;

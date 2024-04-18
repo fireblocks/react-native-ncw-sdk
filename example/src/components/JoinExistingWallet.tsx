@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useAppStore } from "../AppStore";
-import { ActionButton, IActionButtonProps } from "./ui/ActionButton";
+import type { IActionButtonProps } from "./ui/ActionButton";
 import { Card } from "./ui/Card";
 import { Copyable } from "./ui/Copyable";
 import { ENV_CONFIG } from "../env_config";
@@ -11,7 +11,7 @@ import { Button, Text, View } from "react-native";
 import { Row, Table } from "react-native-reanimated-table";
 import { Bar } from "react-native-progress";
 import Svg, { Path } from "react-native-svg";
-import type { TKeyStatus } from "react-native-ncw-sdk";
+import type { TKeyStatus } from "@fireblocks/test-react-native-ncw-sdk";
 
 export const JoinExistingWallet: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);

@@ -10,7 +10,7 @@ import {
 } from "./services/ApiService";
 import { IUser } from "./auth/IAuthManager";
 
-import type { TMPCAlgorithm, IFullKey, IKeyDescriptor } from "react-native-ncw-sdk";
+import type { TMPCAlgorithm, IFullKey, IKeyDescriptor } from "@fireblocks/test-react-native-ncw-sdk";
 
 export interface IAssetInfo {
   asset: IWalletAsset;
