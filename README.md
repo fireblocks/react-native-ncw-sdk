@@ -21,6 +21,9 @@ npm install @fireblocks/react-native-ncw-sdk
 ```sh
 cd example/ios && bundle exec pod install
 ```
+3. Open your project's workspace in xcode
+
+4. File > Add Package Dependecies... > https://github.com/fireblocks/ncw-ios-sdk > Add Package > Add to Target: "Your Project" > Add Package
 
 ## Usage
 
