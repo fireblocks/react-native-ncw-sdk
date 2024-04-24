@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [0.1.6](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.5...0.1.6)
+
+> 24 April 2024
+
+- fix: android support old arch [`0bd3b0a`](https://github.com/fireblocks/react-native-ncw-sdk/commit/0bd3b0a2f4a1880c88dbd009250f7d067e3ac68a)
+- release 0.1.5 [`5fa6b0a`](https://github.com/fireblocks/react-native-ncw-sdk/commit/5fa6b0a6a7eca245dde7b3d53ad25c1d6fd77d06)
+
 #### [0.1.5](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.4...0.1.5)
 
 > 18 April 2024
