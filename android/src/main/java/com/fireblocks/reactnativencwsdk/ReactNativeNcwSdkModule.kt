@@ -118,6 +118,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
       listenerCount -= count
     }
 
+    @ReactMethod
     override fun handleResponse(response: ReadableMap, promise: Promise) {
         val opId = response.getInt("opId")
         val cb = operations.remove(opId)
@@ -129,10 +130,12 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun getPhysicalDeviceId(): String {
       return Fireblocks.getPhysicalDeviceId()
     }
 
+    @ReactMethod
     override fun initialize(deviceId: String, promise: Promise) {
         if (ReactNativeNcwSdkModule.initializedDevices.contains(deviceId)) {
             Log.d(TAG, "Device already initialized: $deviceId")
@@ -400,6 +403,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun getKeysStatus(deviceId: String, promise: Promise) {
         try {
             val instance: Fireblocks = Fireblocks.getInstance(deviceId)
@@ -419,6 +423,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun generateMPCKeys(deviceId: String, algorithms: ReadableArray, promise: Promise) {
         try {
             val instance: Fireblocks = Fireblocks.getInstance(deviceId)
@@ -443,6 +448,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun backupKeys(
         deviceId: String,
         passphrase: String,
@@ -467,6 +473,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun recoverKeys(deviceId: String, promise: Promise) {
         try {
             val instance: Fireblocks = Fireblocks.getInstance(deviceId)
@@ -511,6 +518,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun takeover(deviceId: String, promise: Promise) {
         try {
             Log.d(TAG, "Takeover deviceId: $deviceId")
@@ -534,6 +542,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun requestJoinExistingWallet(deviceId: String, promise: Promise) {
         try {
             val handler = JoinWalletHandler(
@@ -568,6 +577,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun stopJoinWallet(deviceId: String) {
         try {
             Log.d(TAG, "Stop Join Wallet deviceId: $deviceId")
@@ -578,6 +588,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
+    @ReactMethod
     override fun approveJoinWalletRequest(deviceId: String, requestId: String, promise: Promise) {
         try {
             Log.d(TAG, "Approve Join Wallet Request deviceId: $deviceId")
@@ -637,6 +648,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
     //         }
     // }
 
+    @ReactMethod
     override fun deriveAssetKey(
         deviceId: String,
         extendedPrivateKey: String,
@@ -660,34 +672,36 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         }
     }
 
-   override fun signTransaction(deviceId: String, txId: String, promise: Promise) {
-        try {
-            val instance: Fireblocks = Fireblocks.getInstance(deviceId)
-            instance.signTransaction(txId) { signedTx: TransactionSignature ->
-                promise.resolve(signedTx.transactionSignatureStatus.toString())
-            }
-        } catch (e: Exception) {
-            promise.reject("Error", e.message)
-            return
-        }
-    }
+  @ReactMethod
+  override fun signTransaction(deviceId: String, txId: String, promise: Promise) {
+      try {
+          val instance: Fireblocks = Fireblocks.getInstance(deviceId)
+          instance.signTransaction(txId) { signedTx: TransactionSignature ->
+              promise.resolve(signedTx.transactionSignatureStatus.toString())
+          }
+      } catch (e: Exception) {
+          promise.reject("Error", e.message)
+          return
+      }
+  }
 
-   override fun getTransactionSignatureStatus(deviceId: String, txId: String, promise: Promise) {
-        try {
-            val instance: Fireblocks = Fireblocks.getInstance(deviceId)
-            val signedTx: TransactionSignature? = instance.getTransactionSignatureStatus(txId)
-            promise.resolve(signedTx?.transactionSignatureStatus.toString())
-        } catch (e: Exception) {
-            promise.reject("Error", e.message)
-            return
-        }
-    }
+  @ReactMethod
+  override fun getTransactionSignatureStatus(deviceId: String, txId: String, promise: Promise) {
+      try {
+          val instance: Fireblocks = Fireblocks.getInstance(deviceId)
+          val signedTx: TransactionSignature? = instance.getTransactionSignatureStatus(txId)
+          promise.resolve(signedTx?.transactionSignatureStatus.toString())
+      } catch (e: Exception) {
+          promise.reject("Error", e.message)
+          return
+      }
+  }
 
-    companion object {
-        private const val TAG = "Fireblocks:NCW"
+  companion object {
+      private const val TAG = "Fireblocks:NCW"
 
-        const val NAME = "ReactNativeNcwSdk"
+      const val NAME = "ReactNativeNcwSdk"
 
-        private val initializedDevices: MutableSet<String> = HashSet()
-    }
+      private val initializedDevices: MutableSet<String> = HashSet()
+  }
 }

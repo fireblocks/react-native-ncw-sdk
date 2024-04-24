@@ -1,6 +1,6 @@
 {
   "name": "@fireblocks/react-native-ncw-sdk",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "NCW SDK Native bridge",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
