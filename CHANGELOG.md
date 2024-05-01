@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [0.1.7](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.6...0.1.7)
+
+> 1 May 2024
+
+- fix: environment initialization [`d8bec15`](https://github.com/fireblocks/react-native-ncw-sdk/commit/d8bec15967d64113fba16685a25c9defeaa41f04)
+- release 0.1.6 [`0a58972`](https://github.com/fireblocks/react-native-ncw-sdk/commit/0a58972b609389d2cdee9f3c0156841f0bb71072)
+
 #### [0.1.6](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.5...0.1.6)
 
 > 24 April 2024
