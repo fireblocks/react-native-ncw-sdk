@@ -136,7 +136,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
     }
 
     @ReactMethod
-    override fun initialize(deviceId: String, promise: Promise) {
+    override fun initialize(deviceId: String, env: String, promise: Promise) {
         if (ReactNativeNcwSdkModule.initializedDevices.contains(deviceId)) {
             Log.d(TAG, "Device already initialized: $deviceId")
             promise.resolve(null)
@@ -145,7 +145,7 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
         val options = FireblocksOptions.Builder()
         // TODO: get options from the JS side
         options
-            .setEnv(Environment.SANDBOX)
+            .setEnv(Environment.valueOf(env.uppercase()))
             .setLogLevel(Level.DEBUG)
             .setLogToConsole(true)
         val eventHandler: FireblocksEventHandler = object : FireblocksEventHandler {

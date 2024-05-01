@@ -20,6 +20,7 @@ export interface Spec extends TurboModule {
 
   initialize(
     deviceId: string,
+    env: string,
   ): Promise<void>;
 
   generateMPCKeys(

@@ -158,7 +158,7 @@ export async function FireblocksNCWFactory(options: IFireblocksNCWOptions): Prom
 
     const dispose = registerEvents(options);
     try {
-        await ReactNativeNcwSdk.initialize(deviceId);
+        await ReactNativeNcwSdk.initialize(deviceId, options.env ?? "sandbox");
     } catch (e) {
         dispose();
         throw e;

@@ -270,7 +270,7 @@ class ReactNativeNcwSdk : RCTEventEmitter {
     }
     
     @objc
-    func initialize(_ deviceId: String, withResolve resolve: RCTPromiseResolveBlock, withReject reject: RCTPromiseRejectBlock) {
+    func initialize(_ deviceId: String, withEnv env: String, withResolve resolve: RCTPromiseResolveBlock, withReject reject: RCTPromiseRejectBlock) {
         do {
             if ReactNativeNcwSdk.adapters.contains(where: { $0.key == deviceId }) {
                 print("already initialized, deviceId:", deviceId)
@@ -281,7 +281,7 @@ class ReactNativeNcwSdk : RCTEventEmitter {
             print("initializing Fireblocks, deiviceId:", deviceId)
             let adapter = DeviceAdapter(deviceId: deviceId)
             
-            let opts: FireblocksOptions = FireblocksOptions(env: .sandbox, eventHandlerDelegate: adapter, logLevel: .debug)
+            let opts: FireblocksOptions = FireblocksOptions(env: FireblocksSDK.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
             
             try Fireblocks.initialize(deviceId: deviceId, messageHandlerDelegate: adapter, keyStorageDelegate: adapter, fireblocksOptions: opts)
             

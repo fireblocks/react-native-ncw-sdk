@@ -10,7 +10,7 @@
 #endif
 
 RCT_EXTERN__BLOCKING_SYNCHRONOUS_METHOD(getPhysicalDeviceId)
-RCT_EXTERN_METHOD(initialize: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(initialize: (NSString)deviceId withEnv:(NSString)env withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(getKeysStatus: (NSString)deviceId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(generateMPCKeys: (NSString)deviceId withAlgorithms:(NSArray)algorithms withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(backupKeys: (NSString)deviceId withPassphrase:(NSString)passphrase withPassphraseId:(NSString)passphraseId withResolve:(RCTPromiseResolveBlock)resolve withReject:(RCTPromiseRejectBlock)reject)

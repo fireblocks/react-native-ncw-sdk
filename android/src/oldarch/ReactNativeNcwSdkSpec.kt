@@ -11,7 +11,7 @@ abstract class ReactNativeNcwSdkSpec internal constructor(context: ReactApplicat
 
   abstract fun handleResponse(response: ReadableMap, promise: Promise)
   abstract fun getPhysicalDeviceId(): String
-  abstract fun initialize(deviceId: String, promise: Promise) 
+  abstract fun initialize(deviceId: String, env: String, promise: Promise) 
   abstract fun getKeysStatus(deviceId: String, promise: Promise)
   abstract fun generateMPCKeys(deviceId: String, algorithms: ReadableArray, promise: Promise)
   abstract fun backupKeys(
