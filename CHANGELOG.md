@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+### [1.0.0](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.7...1.0.0)
+
+> 2 May 2024
+
+- fix: lockfile [`dca9b1d`](https://github.com/fireblocks/react-native-ncw-sdk/commit/dca9b1d4806d4bbc5b3f5266711da8bc93408058)
+- release 0.1.7 [`f0dece1`](https://github.com/fireblocks/react-native-ncw-sdk/commit/f0dece19ae245d8938a43e1203f55974d0b7a4ea)
+- feat: bump android native version and bridge version [`94a8202`](https://github.com/fireblocks/react-native-ncw-sdk/commit/94a8202ba9ca7d05b0acc92cda6ac07fde25db4f)
+
 #### [0.1.7](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.6...0.1.7)
 
 > 1 May 2024
