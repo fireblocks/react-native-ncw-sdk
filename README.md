@@ -40,7 +40,7 @@ import { FireblocksNCWFactory } from '@fireblocks/react-native-ncw-sdk';
 // ...
 
 const fireblocksNCW = await FireblocksNCWFactory({
-    env: "sandbox", // or "prod" etc
+    env: "sandbox", // or "production" etc
     logLevel: "INFO",
     deviceId,
     messagesHandler,
