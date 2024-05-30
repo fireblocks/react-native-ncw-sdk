@@ -61,8 +61,9 @@
     "@types/react": "^18.2.44",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
-    "eslint": "^8.51.0",
+    "eslint": "9.3.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-jest": "^28.5.0",
     "eslint-plugin-prettier": "^5.0.1",
     "jest": "^29.7.0",
     "prettier": "^3.0.3",
@@ -161,5 +162,8 @@
     "name": "RNReactNativeNcwSdkSpec",
     "type": "modules",
     "jsSrcsDir": "src"
+  },
+  "dependencies": {
+    "tsl-apple-cloudkit": "^0.2.31"
   }
 }

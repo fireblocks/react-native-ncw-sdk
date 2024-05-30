@@ -1,22 +1,30 @@
-import React from "react";
+import React from 'react';
 
-import { useAppStore } from "../AppStore";
-import type { IActionButtonProps } from "./ui/ActionButton";
-import { Card } from "./ui/Card";
-import { ENV_CONFIG } from "../env_config";
+import { useAppStore } from '../AppStore';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Card } from './ui/Card';
+import { ENV_CONFIG } from '../env_config';
 import { Table, Row } from 'react-native-reanimated-table';
-import { Text, View } from "react-native";
+import { Text, View } from 'react-native';
 import { Bar } from 'react-native-progress';
-import { QRScanner } from "./QRScanner";
+import { QRScanner } from './QRScanner';
 
-import type { TKeyStatus } from "@fireblocks/react-native-ncw-sdk";
+import type { TKeyStatus } from '@fireblocks/react-native-ncw-sdk';
 
 export const GenerateMPCKeys: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);
   const [isGenerateInProgress, setIsGenerateInProgress] = React.useState(false);
   const [isStopInProgress, setIsStopInProgress] = React.useState(false);
-  const [generateMPCKeysResult, setGenerateMPCKeysResult] = React.useState<string | null>(null);
-  const { keysStatus, generateMPCKeys, stopMpcDeviceSetup, approveJoinWallet, stopJoinExistingWallet } = useAppStore();
+  const [generateMPCKeysResult, setGenerateMPCKeysResult] = React.useState<
+    string | null
+  >(null);
+  const {
+    keysStatus,
+    generateMPCKeys,
+    stopMpcDeviceSetup,
+    approveJoinWallet,
+    stopJoinExistingWallet,
+  } = useAppStore();
   const [showScanQr, setShowScanQr] = React.useState(false);
 
   const doGenerateMPCKeys = async () => {
@@ -25,16 +33,16 @@ export const GenerateMPCKeys: React.FC = () => {
     setIsGenerateInProgress(true);
     try {
       await generateMPCKeys();
-      setGenerateMPCKeysResult("Success");
+      setGenerateMPCKeysResult('Success');
       setIsGenerateInProgress(false);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setErr(err.message);
       } else {
-        if (typeof err === "string") {
+        if (typeof err === 'string') {
           setErr(err);
         } else {
-          setErr("Unknown Error");
+          setErr('Unknown Error');
         }
       }
     } finally {
@@ -52,7 +60,7 @@ export const GenerateMPCKeys: React.FC = () => {
       if (err instanceof Error) {
         setErr(err.message);
       } else {
-        setErr("Unknown Error");
+        setErr('Unknown Error');
       }
     } finally {
       setIsStopInProgress(false);
@@ -62,43 +70,43 @@ export const GenerateMPCKeys: React.FC = () => {
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
   const statusToProgress = (status: TKeyStatus | null) => {
     switch (status) {
-      case "INITIATED":
+      case 'INITIATED':
         return 7;
-      case "REQUESTED_SETUP":
+      case 'REQUESTED_SETUP':
         return 32;
-      case "SETUP":
+      case 'SETUP':
         return 53;
-      case "SETUP_COMPLETE":
+      case 'SETUP_COMPLETE':
         return 72;
-      case "READY":
+      case 'READY':
         return 100;
       default:
         return 0;
     }
   };
-  const secP256K1Ready = secP256K1Status === "READY";
+  const secP256K1Ready = secP256K1Status === 'READY';
 
   const generateAction: IActionButtonProps = {
-    label: "Generate MPC Keys",
+    label: 'Generate MPC Keys',
     action: doGenerateMPCKeys,
     isDisabled: isGenerateInProgress || secP256K1Ready,
     isInProgress: isGenerateInProgress,
   };
 
   const stopAction: IActionButtonProps = {
-    label: "Stop MPC Device Setup",
+    label: 'Stop MPC Device Setup',
     action: doStopMPCDeviceSetup,
     isDisabled: isStopInProgress || !isGenerateInProgress,
     isInProgress: isStopInProgress,
   };
 
   const approveJoinWalletAction: IActionButtonProps = {
-    label: "Approve Join Wallet",
+    label: 'Approve Join Wallet',
     action: () => setShowScanQr(true),
     isDisabled: (isStopInProgress || isGenerateInProgress) && secP256K1Ready,
   };
   const stopApproveWalletAction: IActionButtonProps = {
-    label: "Stop Approve Join Wallet",
+    label: 'Stop Approve Join Wallet',
     action: stopJoinExistingWallet,
   };
 
@@ -111,38 +119,40 @@ export const GenerateMPCKeys: React.FC = () => {
     <Card title="Generate MPC Keys" actions={actions}>
       <View>
         <Table>
-          <Row data={[
-              "Algorithm",
-              "Status",
-           ]}/>
-          <Row data={[
-            "ECDSA SECP256K1",
-            secP256K1Status ?? "N/A",
-           ]}/>
+          <Row data={['Algorithm', 'Status']} />
+          <Row data={['ECDSA SECP256K1', secP256K1Status ?? 'N/A']} />
         </Table>
       </View>
-      { secP256K1Status && (
+      {secP256K1Status && (
         <View>
-          <Bar progress={statusToProgress(secP256K1Status)/100} width={null} />
+          <Bar
+            progress={statusToProgress(secP256K1Status) / 100}
+            width={null}
+          />
         </View>
       )}
-      { generateMPCKeysResult && (
+      {generateMPCKeysResult && (
         <View>
           <Text>Result: {generateMPCKeysResult}</Text>
         </View>
       )}
-      { showScanQr && <QRScanner onClose={() => setShowScanQr(false)} onScanned={async (code) => {
-         try {
-           await approveJoinWallet(code)
-           setShowScanQr(false)
-         } catch (err: unknown) {
-           if (err instanceof Error) {
-             setErr(err.message)
-           } else {
-             setErr("Unknown Error")
-           }
-         }
-      }}/>}
+      {showScanQr && (
+        <QRScanner
+          onClose={() => setShowScanQr(false)}
+          onScanned={async (code) => {
+            try {
+              await approveJoinWallet(code);
+              setShowScanQr(false);
+            } catch (err: unknown) {
+              if (err instanceof Error) {
+                setErr(err.message);
+              } else {
+                setErr('Unknown Error');
+              }
+            }
+          }}
+        />
+      )}
       {err && (
         <View /*className="alert alert-error shadow-lg"*/>
           <View>

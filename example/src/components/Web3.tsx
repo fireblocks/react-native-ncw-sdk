@@ -1,8 +1,8 @@
-import React from "react";
-import { useAppStore } from "../AppStore";
-import { Web3ConnectionRow } from "./Web3ConnectionRow";
-import { IActionButtonProps } from "./ui/ActionButton";
-import { Card } from "./ui/Card";
+import React from 'react';
+import { useAppStore } from '../AppStore';
+import { Web3ConnectionRow } from './Web3ConnectionRow';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Card } from './ui/Card';
 
 export const Web3: React.FC = () => {
   const {
@@ -21,7 +21,7 @@ export const Web3: React.FC = () => {
 
   const refeshAction: IActionButtonProps = {
     action: onRefreshClicked,
-    label: "Refresh",
+    label: 'Refresh',
   };
 
   const onCreateConnection = async () => {
@@ -54,8 +54,8 @@ export const Web3: React.FC = () => {
         <input
           type="text"
           className="input input-bordered"
-          value={web3UriPrompt ?? ""}
-          onChange={(e) => setWeb3UriPrompt(e.currentTarget.value)}
+          value={web3UriPrompt ?? ''}
+          // onChange={(e: React.ChangeEvent<HTMLInputElement>) => setWeb3UriPrompt(e.currentTarget.value)}
         />
         <button
           className="btn btn-secondary"
@@ -70,17 +70,24 @@ export const Web3: React.FC = () => {
           <div className="grid grid-cols-[auto_100px_100px] gap-2">
             <label className="label">
               <span className="label-text">
-                Allow connection to:{" "}
+                Allow connection to:{' '}
                 <b>
-                  {pendingWeb3Connection.sessionMetadata.appName} ({pendingWeb3Connection.sessionMetadata.appUrl})
+                  {pendingWeb3Connection.sessionMetadata.appName} (
+                  {pendingWeb3Connection.sessionMetadata.appUrl})
                 </b>
                 ?
               </span>
             </label>
-            <button className="btn btn-approve-web3 btn-primary" onClick={onApproveConnection}>
+            <button
+              className="btn btn-approve-web3 btn-primary"
+              onClick={onApproveConnection}
+            >
               Approve
             </button>
-            <button className="btn btn-deby-web3 btn-secondary" onClick={onDenyConnection}>
+            <button
+              className="btn btn-deby-web3 btn-secondary"
+              onClick={onDenyConnection}
+            >
               Deny
             </button>
           </div>

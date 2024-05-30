@@ -1,9 +1,13 @@
-import type { CloudKit } from "tsl-apple-cloudkit";
+import type { CloudKit } from 'tsl-apple-cloudkit';
 
-export const cloudkitBackup = async (cloudkit: CloudKit, passphrase: string, passphraseId: string) => {
+export const cloudkitBackup = async (
+  cloudkit: CloudKit,
+  passphrase: string,
+  passphraseId: string
+) => {
   const db = cloudkit.getDefaultContainer().privateCloudDatabase;
   const recordName = `backup_t_${passphraseId}`;
-  const recordType = "Backup";
+  const recordType = 'Backup';
 
   // create
   const result = await db.saveRecords([
@@ -12,7 +16,7 @@ export const cloudkitBackup = async (cloudkit: CloudKit, passphrase: string, pas
       recordType,
       fields: {
         phrase: {
-          type: "STRING",
+          type: 'STRING',
           value: passphrase,
         },
       },
@@ -20,15 +24,18 @@ export const cloudkitBackup = async (cloudkit: CloudKit, passphrase: string, pas
   ]);
 
   if (result.hasErrors) {
-    console.error("Failed to save records", result.errors);
-    throw new Error("Failed to backup");
+    console.error('Failed to save records', result.errors);
+    throw new Error('Failed to backup');
   }
 };
 
-export const cloudkitRecover = async (cloudkit: CloudKit, passphraseId: string) => {
+export const cloudkitRecover = async (
+  cloudkit: CloudKit,
+  passphraseId: string
+) => {
   const db = cloudkit.getDefaultContainer().privateCloudDatabase;
   const recordName = `backup_t_${passphraseId}`;
-  const recordType = "Backup";
+  const recordType = 'Backup';
 
   const results = await db.fetchRecords([
     {
@@ -38,19 +45,19 @@ export const cloudkitRecover = async (cloudkit: CloudKit, passphraseId: string) 
   ]);
 
   if (results.hasErrors) {
-    console.error("Failed to fetch records", results.errors);
-    throw new Error("Failed to recover");
+    console.error('Failed to fetch records', results.errors);
+    throw new Error('Failed to recover');
   }
 
   if (results.records.length === 1) {
-    if (Array.isArray(results.records[0].fields)) {
-      throw new Error("Unexpected schema");
+    if (Array.isArray(results.records[0]?.fields)) {
+      throw new Error('Unexpected schema');
     }
-    if (results.records[0].fields["phrase"].type !== "STRING") {
-      throw new Error("Unexpected schema");
+    if (results.records[0]?.fields['phrase']?.type !== 'STRING') {
+      throw new Error('Unexpected schema');
     }
-    return results.records[0].fields["phrase"].value as string;
+    return results.records[0].fields['phrase'].value as string;
   }
 
-  throw new Error("not found");
+  throw new Error('not found');
 };

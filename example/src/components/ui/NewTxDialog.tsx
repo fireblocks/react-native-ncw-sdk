@@ -1,10 +1,13 @@
-import React from "react";
-import { useAppStore } from "../../AppStore";
-import { Autocomplete, IAutoCompleteItem } from "./Autocomplete";
-import { INewTransactionData } from "../../IAppState";
-import { Modal, View, Text, Switch, Button, TextInput } from "react-native";
+import React from 'react';
+import { useAppStore } from '../../AppStore';
+import type { IAutoCompleteItem } from './Autocomplete';
+import type { INewTransactionData } from '../../IAppState';
+import { Modal, View, Text, Switch, Button, TextInput } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { AutocompleteDropdown, AutocompleteDropdownContextProvider } from "react-native-autocomplete-dropdown";
+import {
+  AutocompleteDropdown,
+  AutocompleteDropdownContextProvider,
+} from 'react-native-autocomplete-dropdown';
 
 interface IProps {
   isOpen: boolean;
@@ -12,36 +15,42 @@ interface IProps {
   onClose: () => void;
 }
 
-export const NewTxDialog: React.FC<IProps> = ({ isOpen, onClose, assetsToSelectFrom }) => {
+export const NewTxDialog: React.FC<IProps> = ({
+  isOpen,
+  onClose,
+  assetsToSelectFrom,
+}) => {
   const { createTransaction, deviceId } = useAppStore();
-  const [assetIdPrompt, setAssetIdPrompt] = React.useState<string>("");
-  const [amount, setAmount] = React.useState<string>("");
-  const [destinationAddress, setDestinationAddress] = React.useState<string>("");
-  const [txType, setTXType] = React.useState<"transfer" | "typed-message">("typed-message");
-  const [txFee, setTXFee] = React.useState<"LOW" | "MEDIUM" | "HIGH">("LOW");
+  const [assetIdPrompt, setAssetIdPrompt] = React.useState<string>('');
+  const [amount, setAmount] = React.useState<string>('');
+  const [destinationAddress, setDestinationAddress] =
+    React.useState<string>('');
+  const [txType, setTXType] = React.useState<'transfer' | 'typed-message'>(
+    'typed-message'
+  );
+  const [txFee, setTXFee] = React.useState<'LOW' | 'MEDIUM' | 'HIGH'>('LOW');
   const [txTypeOpen, setTxTypeOpen] = React.useState(false);
 
   const clearForm = () => {
-    setAmount("");
-    setDestinationAddress("");
-    setTXFee("LOW");
+    setAmount('');
+    setDestinationAddress('');
+    setTXFee('LOW');
   };
 
   const closeDialog = () => {
-    setTXType("transfer");
+    setTXType('transfer');
     clearForm();
     onClose();
   };
 
   const onCreateTransactionClicked = async () => {
-
     let dataToSend: INewTransactionData = {
       note: `API Transaction by ${deviceId}`,
-      accountId: "0",
+      accountId: '0',
       assetId: assetIdPrompt,
-    }
+    };
 
-    if (txType === "transfer") {
+    if (txType === 'transfer') {
       dataToSend = {
         ...dataToSend,
         amount: amount,
@@ -56,18 +65,20 @@ export const NewTxDialog: React.FC<IProps> = ({ isOpen, onClose, assetsToSelectF
   };
 
   const isValidForm = () => {
-    if (txType === "transfer") {
+    if (txType === 'transfer') {
       return assetIdPrompt && amount && destinationAddress && txFee;
     }
 
-    if (txType === "typed-message") {
+    if (txType === 'typed-message') {
       return !!assetIdPrompt;
     }
 
     return false;
   };
 
-  const selectedAsset = assetsToSelectFrom?.find((asset) => asset.id === assetIdPrompt);
+  const selectedAsset = assetsToSelectFrom?.find(
+    (asset) => asset.id === assetIdPrompt
+  );
 
   return (
     <Modal visible={isOpen} onDismiss={onClose}>
@@ -88,22 +99,27 @@ export const NewTxDialog: React.FC<IProps> = ({ isOpen, onClose, assetsToSelectF
                   setValue={setTXType}
                   onChangeValue={clearForm}
                   value={txType}
-                  items={[{ label: "Transfer", value: "transfer" }, { label: "Typed message", value: "typed-message" }]}
+                  items={[
+                    { label: 'Transfer', value: 'transfer' },
+                    { label: 'Typed message', value: 'typed-message' },
+                  ]}
                 ></DropDownPicker>
-                <View>
-                </View>
+                <View></View>
                 <Text>Select Asset</Text>
                 <View>
                   <AutocompleteDropdown
-                    onSelectItem={item => {
-                      setAssetIdPrompt(item?.id ?? "")
+                    onSelectItem={(item) => {
+                      setAssetIdPrompt(item?.id ?? '');
                     }}
-                    onClear={() => setAssetIdPrompt("")}
-                    dataSet={assetsToSelectFrom.map(({ id, name }) => ({ id, title: name }))}
+                    onClear={() => setAssetIdPrompt('')}
+                    dataSet={assetsToSelectFrom.map(({ id, name }) => ({
+                      id,
+                      title: name,
+                    }))}
                   />
                 </View>
               </View>
-              {assetIdPrompt && txType === "transfer" && (
+              {assetIdPrompt && txType === 'transfer' && (
                 <View>
                   <View>
                     <Text>Amount</Text>
@@ -127,22 +143,34 @@ export const NewTxDialog: React.FC<IProps> = ({ isOpen, onClose, assetsToSelectF
                     <View>
                       <View>
                         <Switch
-                          value={txFee === "LOW"}
-                          onValueChange={(v) => { if (v) {setTXFee("LOW") }}}
+                          value={txFee === 'LOW'}
+                          onValueChange={(v) => {
+                            if (v) {
+                              setTXFee('LOW');
+                            }
+                          }}
                         />
                         <Text>Low</Text>
                       </View>
                       <View>
                         <Switch
-                          value={txFee === "MEDIUM"}
-                          onValueChange={(v) => { if (v) {setTXFee("MEDIUM") }}}
+                          value={txFee === 'MEDIUM'}
+                          onValueChange={(v) => {
+                            if (v) {
+                              setTXFee('MEDIUM');
+                            }
+                          }}
                         />
                         <Text>Medium</Text>
                       </View>
                       <View>
                         <Switch
-                          value={txFee === "HIGH"}
-                          onValueChange={(v) => { if (v) {setTXFee("HIGH") }}}
+                          value={txFee === 'HIGH'}
+                          onValueChange={(v) => {
+                            if (v) {
+                              setTXFee('HIGH');
+                            }
+                          }}
                         />
                         <Text>High</Text>
                       </View>
@@ -150,7 +178,11 @@ export const NewTxDialog: React.FC<IProps> = ({ isOpen, onClose, assetsToSelectF
                   </View>
                 </View>
               )}
-              <Button title="Create" onPress={onCreateTransactionClicked} disabled={!isValidForm()} />
+              <Button
+                title="Create"
+                onPress={onCreateTransactionClicked}
+                disabled={!isValidForm()}
+              />
               <Button title="Cancel" onPress={closeDialog} />
             </View>
           </View>

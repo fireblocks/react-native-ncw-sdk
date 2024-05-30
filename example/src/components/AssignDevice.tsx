@@ -1,11 +1,11 @@
-import React from "react";
-import { useAppStore } from "../AppStore";
-import { Card } from "./ui/Card";
-import { validateGuid } from "./validateGuid";
-import { IActionButtonProps } from "./ui/ActionButton";
-import { Copyable } from "./ui/Copyable";
-import { Text, TextInput, View } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import React from 'react';
+import { useAppStore } from '../AppStore';
+import { Card } from './ui/Card';
+import { validateGuid } from './validateGuid';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Copyable } from './ui/Copyable';
+import { Text, TextInput, View } from 'react-native';
+// import Svg, { Path } from 'react-native-svg';
 
 export const AssignDevice: React.FC = () => {
   const {
@@ -29,7 +29,7 @@ export const AssignDevice: React.FC = () => {
   }, [automateInitialization, walletId]);
 
   React.useEffect(() => {
-    if (appMode === "JOIN") {
+    if (appMode === 'JOIN') {
       generateNewDeviceId();
     }
   }, [appMode]);
@@ -38,71 +38,81 @@ export const AssignDevice: React.FC = () => {
   const isValidWalletId = validateGuid(walletId);
 
   const blockActions = React.useMemo(() => {
-    if (appMode === "SIGN_IN") {
-      return assignDeviceStatus === "started" || assignDeviceStatus === "success";
+    if (appMode === 'SIGN_IN') {
+      return (
+        assignDeviceStatus === 'started' || assignDeviceStatus === 'success'
+      );
     } else {
-      return joinWalletStatus === "started";
+      return joinWalletStatus === 'started';
     }
   }, [appMode, assignDeviceStatus, joinWalletStatus]);
 
   const generateNewDeviceIdAction: IActionButtonProps = {
     action: generateNewDeviceId,
-    isDisabled: assignDeviceStatus === "started" || joinWalletStatus === "started",
-    label: "Generate new Device ID",
+    isDisabled:
+      assignDeviceStatus === 'started' || joinWalletStatus === 'started',
+    label: 'Generate new Device ID',
   };
 
   const assignDeviceAction: IActionButtonProps = {
     action: assignCurrentDevice,
     isDisabled: blockActions || !isValidDeviceId,
-    isInProgress: assignDeviceStatus === "started",
-    label: "Assign Device",
+    isInProgress: assignDeviceStatus === 'started',
+    label: 'Assign Device',
   };
 
   const joinWalletAction: IActionButtonProps = {
     action: askToJoinWalletExisting,
     isDisabled: blockActions || !isValidWalletId,
-    isInProgress: assignDeviceStatus === "started",
-    label: "Join Existing Wallet",
+    isInProgress: assignDeviceStatus === 'started',
+    label: 'Join Existing Wallet',
   };
 
   return (
     <Card
       title="Device ID"
-      actions={[generateNewDeviceIdAction, appMode === "SIGN_IN" ? assignDeviceAction : joinWalletAction]}
+      actions={[
+        generateNewDeviceIdAction,
+        appMode === 'SIGN_IN' ? assignDeviceAction : joinWalletAction,
+      ]}
     >
       <View>
         <Text>Device ID:</Text>
-        {
-          blockActions ? (
-            deviceId ? <Copyable value={deviceId} /> : <View />
+        {blockActions ? (
+          deviceId ? (
+            <Copyable value={deviceId} />
           ) : (
-            <TextInput
-              editable={!blockActions}
-              value={deviceId ?? ""}
-              onChangeText={(e) => setDeviceId(e)}
-              placeholder="Device id"
-            />
+            <View />
           )
-        }
-        {(walletId || appMode === "JOIN") && (
+        ) : (
+          <TextInput
+            editable={!blockActions}
+            value={deviceId ?? ''}
+            onChangeText={(e) => setDeviceId(e)}
+            placeholder="Device id"
+          />
+        )}
+        {(walletId || appMode === 'JOIN') && (
           <View>
             <Text>Wallet ID:</Text>
-            {
-              blockActions ? (
-                walletId ? <Copyable value={walletId} /> : <View />
+            {blockActions ? (
+              walletId ? (
+                <Copyable value={walletId} />
               ) : (
-                <TextInput
-                  editable={!(blockActions || appMode === "SIGN_IN")}
-                  value={walletId ?? ""}
-                  onChangeText={(e) => setWalletId(e)}
-                  placeholder="Wallet id"
-                />
+                <View />
               )
-            }
+            ) : (
+              <TextInput
+                editable={!(blockActions || appMode === 'SIGN_IN')}
+                value={walletId ?? ''}
+                onChangeText={(e) => setWalletId(e)}
+                placeholder="Wallet id"
+              />
+            )}
           </View>
         )}
       </View>
-      {assignDeviceStatus === "failed" && (
+      {assignDeviceStatus === 'failed' && (
         <View /*className="alert alert-error shadow-lg"*/>
           <View>
             {/* <Svg
