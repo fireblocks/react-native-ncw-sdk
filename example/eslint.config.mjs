@@ -4,7 +4,6 @@ export default new ESLint({
   overrideConfig: {
     parser: '@typescript-eslint/parser',
     extends: [
-      '@react-native',
       'eslint:recommended',
       'plugin:@typescript-eslint/recommended',
       'plugin:prettier/recommended',
@@ -83,6 +82,6 @@ export default new ESLint({
         { max: 1000, skipBlankLines: true, skipComments: true },
       ],
     },
-    ignores: ['.eslint.config.mjs', 'node_modules'],
+    ignorePatterns: ['.eslint.config.mjs', 'node_modules'],
   },
 });
