@@ -165,8 +165,5 @@
     "name": "RNReactNativeNcwSdkSpec",
     "type": "modules",
     "jsSrcsDir": "src"
-  },
-  "dependencies": {
-    "tsl-apple-cloudkit": "^0.2.31"
   }
 }
