@@ -720,7 +720,7 @@
 			repositoryURL = "https://github.com/fireblocks/ncw-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.5.0;
+				minimumVersion = 2.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

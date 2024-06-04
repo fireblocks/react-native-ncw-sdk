@@ -9,7 +9,7 @@ def $RNNCWSDK.post_install(installer)
   project = installer.pods_project
   url =  "https://github.com/fireblocks/ncw-ios-sdk.git"
   product_name = "FireblocksSDK"
-  requirement = { :kind => "upToNextMajorVersion", :minimumVersion => "2.5.0" }
+  requirement = { :kind => "upToNextMajorVersion", :minimumVersion => "2.3.6" }
 
   pkg_class = Xcodeproj::Project::Object::XCRemoteSwiftPackageReference
   ref_class = Xcodeproj::Project::Object::XCSwiftPackageProductDependency
