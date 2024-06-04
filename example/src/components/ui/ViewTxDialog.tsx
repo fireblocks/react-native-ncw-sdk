@@ -1,11 +1,11 @@
-import React from "react";
-import { useAppStore } from "../../AppStore";
-import { Modal, View, Text, Button } from "react-native";
-import { isFinal } from "../TransactionRow";
-import { Copyable } from "./Copyable";
+import React from 'react';
+import { useAppStore } from '../../AppStore';
+import { Modal, View, Text, Button } from 'react-native';
+import { isFinal } from '../TransactionRow';
+import { Copyable } from './Copyable';
 
 interface IProps {
-  txId: string|null;
+  txId: string | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -42,7 +42,8 @@ export const ViewTxDialog: React.FC<IProps> = ({ isOpen, onClose, txId }) => {
     }
   };
 
-  const tx = txs.find(tx => tx.id === txId);
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const tx = txs.find((tx) => tx.id === txId);
 
   return (
     <Modal visible={isOpen} onDismiss={onClose}>
@@ -55,15 +56,19 @@ export const ViewTxDialog: React.FC<IProps> = ({ isOpen, onClose, txId }) => {
           </View>
           <View>
             <Text>Tx ID:</Text>
-            <Copyable value={txId ?? ""}/>
+            <Copyable value={txId ?? ''} />
           </View>
           <View>
             <Text>Created at:</Text>
-            <Text>{tx?.createdAt ? new Date(tx?.createdAt).toString() : ""}</Text>
+            <Text>
+              {tx?.createdAt ? new Date(tx?.createdAt).toString() : ''}
+            </Text>
           </View>
           <View>
             <Text>Last updated at:</Text>
-            <Text>{tx?.lastUpdated ? new Date(tx.lastUpdated).toString() : ""}</Text>
+            <Text>
+              {tx?.lastUpdated ? new Date(tx.lastUpdated).toString() : ''}
+            </Text>
           </View>
           <View>
             <Text>Asset: {tx?.details?.assetId}</Text>
@@ -71,8 +76,20 @@ export const ViewTxDialog: React.FC<IProps> = ({ isOpen, onClose, txId }) => {
           <View>
             <Text>Transaction status: {tx?.status}</Text>
             <View>
-              <Button title="Sign" onPress={onSignTransaction} disabled={inProgress || tx?.status !== "PENDING_SIGNATURE"} />
-              <Button title="Cancel" onPress={onCancelTransaction} disabled={inProgress || (tx?.status && isFinal(tx?.status)) || tx?.status === "CANCELLING"} />
+              <Button
+                title="Sign"
+                onPress={onSignTransaction}
+                disabled={inProgress || tx?.status !== 'PENDING_SIGNATURE'}
+              />
+              <Button
+                title="Cancel"
+                onPress={onCancelTransaction}
+                disabled={
+                  inProgress ||
+                  (tx?.status && isFinal(tx?.status)) ||
+                  tx?.status === 'CANCELLING'
+                }
+              />
             </View>
             <View>
               <Button title="Close" onPress={onClose} />

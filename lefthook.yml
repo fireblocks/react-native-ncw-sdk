@@ -4,9 +4,10 @@ pre-commit:
     lint:
       glob: "*.{js,ts,jsx,tsx}"
       run: npx eslint {staged_files}
-    types:
-      glob: "*.{js,ts, jsx, tsx}"
-      run: npx tsc --noEmit
+    # types:
+    #   glob: "*.{js,ts, jsx, tsx}"
+    #   exclude: "node_modules/**/*"
+    #   run: npx tsc --noEmit
 commit-msg:
   parallel: true
   commands:

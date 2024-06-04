@@ -1,22 +1,67 @@
+import { create } from 'zustand';
+import type {
+  IAppState,
+  IPassphraseInfo,
+  TPassphrases,
+  TAppMode,
+  INewTransactionData,
+  TAccount,
+} from './IAppState';
+import {
+  generateDeviceId,
+  getOrCreateDeviceId,
+  storeDeviceId,
+} from './deviceId';
+import { ENV_CONFIG } from './env_config';
+import {
+  ApiService,
+  type ITransactionData,
+  type IWalletAsset,
+  type TPassphraseLocation,
+} from './services/ApiService';
+import { PasswordEncryptedLocalStorage } from './services/PasswordEncryptedLocalStorage';
+import type { IAuthManager } from './auth/IAuthManager';
+import { FirebaseAuthManager } from './auth/FirebaseAuthManager';
+import { decode, version } from 'js-base64';
+import type {
+  IEventsHandler,
+  IFireblocksNCW,
+  IJoinWalletEvent,
+  IKeyBackupEvent,
+  IKeyDescriptor,
+  IKeyRecoveryEvent,
+  IMessagesHandler,
+} from '@fireblocks/react-native-ncw-sdk';
+import type {
+  TEvent,
+  TMPCAlgorithm,
+  TEnv,
+} from '@fireblocks/react-native-ncw-sdk';
+import { FireblocksNCWFactory } from '@fireblocks/react-native-ncw-sdk';
+import {
+  ACCESSIBLE,
+  ACCESS_CONTROL,
+  type Options,
+  getGenericPassword,
+  setGenericPassword,
+} from 'react-native-keychain';
+import { randomPassPhrase } from './services/randomPassPhrase';
 
-import { create } from "zustand";
-import type { IAppState, IPassphraseInfo, TPassphrases, TAppMode, INewTransactionData } from "./IAppState";
-import { generateDeviceId, getOrCreateDeviceId, storeDeviceId } from "./deviceId";
-import { ENV_CONFIG } from "./env_config";
-import { ApiService, type ITransactionData, type IWalletAsset, type TPassphraseLocation } from "./services/ApiService";
-import { PasswordEncryptedLocalStorage } from "./services/PasswordEncryptedLocalStorage";
-import type { IAuthManager } from "./auth/IAuthManager";
-import { FirebaseAuthManager } from "./auth/FirebaseAuthManager";
-import { decode, version } from "js-base64";
-import type { IEventsHandler, IFireblocksNCW, IJoinWalletEvent, IKeyBackupEvent, IKeyDescriptor, IKeyRecoveryEvent, IMessagesHandler } from "@fireblocks/react-native-ncw-sdk";
-import type { TEvent, TMPCAlgorithm, TEnv } from "@fireblocks/react-native-ncw-sdk";
-import { FireblocksNCWFactory } from "@fireblocks/react-native-ncw-sdk";
-import { ACCESSIBLE, ACCESS_CONTROL, type Options, getGenericPassword, setGenericPassword } from "react-native-keychain";
-import { randomPassPhrase } from "./services/randomPassPhrase";
-
-export type TAsyncActionStatus = "not_started" | "started" | "success" | "failed";
-export type TFireblocksNCWStatus = "sdk_not_ready" | "initializing_sdk" | "sdk_available" | "sdk_initialization_failed";
-export type TRequestDecodedData = { email: string; requestId: string; platform: string };
+export type TAsyncActionStatus =
+  | 'not_started'
+  | 'started'
+  | 'success'
+  | 'failed';
+export type TFireblocksNCWStatus =
+  | 'sdk_not_ready'
+  | 'initializing_sdk'
+  | 'sdk_available'
+  | 'sdk_initialization_failed';
+export type TRequestDecodedData = {
+  email: string;
+  requestId: string;
+  platform: string;
+};
 
 export const useAppStore = create<IAppState>()((set, get) => {
   let apiService: ApiService | null = null;
@@ -27,14 +72,19 @@ export const useAppStore = create<IAppState>()((set, get) => {
     set({ loggedUser: user });
   });
 
-  const updateOrAddTx = (existingTxs: ITransactionData[], newTx: ITransactionData): ITransactionData[] => {
+  const updateOrAddTx = (
+    existingTxs: ITransactionData[],
+    newTx: ITransactionData
+  ): ITransactionData[] => {
     const index = existingTxs.findIndex((tx) => tx.id === newTx.id);
     if (index === -1) {
       return [...existingTxs, newTx];
     }
     const result = [...existingTxs];
     result[index] = newTx;
-    return result.sort((t1, t2) => (t2.lastUpdated ?? 0) - (t1.lastUpdated ?? 0));
+    return result.sort(
+      (t1, t2) => (t2.lastUpdated ?? 0) - (t1.lastUpdated ?? 0)
+    );
   };
 
   return {
@@ -51,15 +101,15 @@ export const useAppStore = create<IAppState>()((set, get) => {
     txs: [],
     appStoreInitialized: false,
     deviceId: null,
-    loginToDemoAppServerStatus: "not_started",
-    assignDeviceStatus: "not_started",
-    joinWalletStatus: "not_started",
-    fireblocksNCWStatus: "sdk_not_ready",
+    loginToDemoAppServerStatus: 'not_started',
+    assignDeviceStatus: 'not_started',
+    joinWalletStatus: 'not_started',
+    fireblocksNCWStatus: 'sdk_not_ready',
     addDeviceRequestId: null,
     keysStatus: null,
     passphrase: null,
     passphrases: null,
-    regeneratePassphrase: () => { },
+    regeneratePassphrase: () => {},
     accounts: [],
     supportedAssets: {},
     initAppStore: () => {
@@ -81,7 +131,7 @@ export const useAppStore = create<IAppState>()((set, get) => {
     async getGoogleDriveCredentials(): Promise<string> {
       return await authManager.getGoogleDriveCredentials();
     },
-    async login(provider: "GOOGLE" | "APPLE"): Promise<void> {
+    async login(provider: 'GOOGLE' | 'APPLE'): Promise<void> {
       await authManager.login(provider);
       set({
         loggedUser: authManager.loggedUser,
@@ -102,42 +152,50 @@ export const useAppStore = create<IAppState>()((set, get) => {
         web3Connections: [],
         txs: [],
         appStoreInitialized: false,
-        loginToDemoAppServerStatus: "not_started",
-        assignDeviceStatus: "not_started",
-        joinWalletStatus: "not_started",
-        fireblocksNCWStatus: "sdk_not_ready",
+        loginToDemoAppServerStatus: 'not_started',
+        assignDeviceStatus: 'not_started',
+        joinWalletStatus: 'not_started',
+        fireblocksNCWStatus: 'sdk_not_ready',
         keysStatus: null,
         accounts: [],
         supportedAssets: {},
       });
     },
     assignCurrentDevice: async () => {
-      set((state) => ({ ...state, walletId: null, assignDeviceStatus: "started" }));
+      set((state) => ({
+        ...state,
+        walletId: null,
+        assignDeviceStatus: 'started',
+      }));
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       try {
         const walletId = await apiService.assignDevice(deviceId);
-        set((state) => ({ ...state, walletId, assignDeviceStatus: "success" }));
+        set((state) => ({ ...state, walletId, assignDeviceStatus: 'success' }));
       } catch (e) {
-        set((state) => ({ ...state, walletId: null, assignDeviceStatus: "failed" }));
+        set((state) => ({
+          ...state,
+          walletId: null,
+          assignDeviceStatus: 'failed',
+        }));
       }
     },
     askToJoinWalletExisting: async () => {
-      set((state) => ({ ...state, joinWalletStatus: "started" }));
+      set((state) => ({ ...state, joinWalletStatus: 'started' }));
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { walletId, deviceId } = get();
       if (!walletId) {
-        throw new Error("walletId is not set");
+        throw new Error('walletId is not set');
       }
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
 
       try {
@@ -146,8 +204,8 @@ export const useAppStore = create<IAppState>()((set, get) => {
           ...state,
           deviceId,
           walletId,
-          assignDeviceStatus: "success",
-          joinWalletStatus: "success",
+          assignDeviceStatus: 'success',
+          joinWalletStatus: 'success',
           joinExistingWalletMode: true,
         }));
       } catch (e) {
@@ -155,27 +213,36 @@ export const useAppStore = create<IAppState>()((set, get) => {
           ...state,
           deviceId: null,
           walletId: null,
-          assignDeviceStatus: "failed",
-          joinWalletStatus: "failed",
+          assignDeviceStatus: 'failed',
+          joinWalletStatus: 'failed',
         }));
       }
     },
     generateNewDeviceId: async () => {
       const { userId } = get();
       if (!userId) {
-        throw new Error("First login to demo app server");
+        throw new Error('First login to demo app server');
       }
       const deviceId = generateDeviceId();
-      set((state) => ({ ...state, deviceId, walletId: null, assignDeviceStatus: "not_started" }));
+      set((state) => ({
+        ...state,
+        deviceId,
+        walletId: null,
+        assignDeviceStatus: 'not_started',
+      }));
       storeDeviceId(deviceId, userId);
     },
     setAppMode: (appMode: TAppMode) => {
-      set((state) => ({ ...state, appMode, assignDeviceStatus: "not_started" }));
+      set((state) => ({
+        ...state,
+        appMode,
+        assignDeviceStatus: 'not_started',
+      }));
     },
     setDeviceId: (deviceId: string) => {
       const { userId } = get();
       if (!userId) {
-        throw new Error("First login to demo app server");
+        throw new Error('First login to demo app server');
       }
       storeDeviceId(deviceId, userId);
       set((state) => ({ ...state, deviceId }));
@@ -183,44 +250,48 @@ export const useAppStore = create<IAppState>()((set, get) => {
     setWalletId: (walletId: string) => {
       set((state) => ({ ...state, walletId }));
     },
-    setPassphrase: (passphrase: string) => {
+    setPassphrase: (_passphrase: string) => {
       const { userId } = get();
       if (!userId) {
-        throw new Error("First login to demo app server");
+        throw new Error('First login to demo app server');
       }
     },
     getLatestBackup: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { walletId } = get();
       if (!walletId) {
-        throw new Error("No wallet set");
+        throw new Error('No wallet set');
       }
       const latestBackup = await apiService.getLatestBackup(walletId);
       set((state) => ({ ...state, latestBackup }));
     },
     approveJoinWallet: async (requestData?: string) => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
 
       if (requestData) {
         try {
-          const decodedData: TRequestDecodedData = JSON.parse(decode(requestData));
-          const result = await fireblocksNCW.approveJoinWalletRequest(decodedData.requestId);
-          console.log("approveJoinWallet result:", result);
+          const decodedData: TRequestDecodedData = JSON.parse(
+            decode(requestData)
+          );
+          const result = await fireblocksNCW.approveJoinWalletRequest(
+            decodedData.requestId
+          );
+          console.log('approveJoinWallet result:', result);
         } catch (e) {
           console.error(e);
         }
         // set((state) => ({ ...state, passphrase }));
       } else {
-        console.log("approveJoinWallet cancelled");
+        console.log('approveJoinWallet cancelled');
       }
     },
     joinExistingWallet: async () => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       await fireblocksNCW.requestJoinExistingWallet({
         onRequestId(requestId: string) {
@@ -230,13 +301,13 @@ export const useAppStore = create<IAppState>()((set, get) => {
     },
     stopJoinExistingWallet: () => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       fireblocksNCW.stopJoinWallet();
     },
     getPassphraseInfos: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { passphrases } = await apiService.getPassphraseInfos();
       const reduced = passphrases.reduce<TPassphrases>((p, v) => {
@@ -245,68 +316,84 @@ export const useAppStore = create<IAppState>()((set, get) => {
       }, {});
       set((state) => ({ ...state, passphrases: reduced }));
     },
-    createPassphraseInfo: async (passphraseId: string, location: TPassphraseLocation) => {
+    createPassphraseInfo: async (
+      passphraseId: string,
+      location: TPassphraseLocation
+    ) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       await apiService.createPassphraseInfo(passphraseId, location);
       const passphraseInfo: IPassphraseInfo = { passphraseId, location };
-      set((state) => ({ ...state, passphrases: { ...state.passphrases, [passphraseId]: passphraseInfo } }));
+      set((state) => ({
+        ...state,
+        passphrases: { ...state.passphrases, [passphraseId]: passphraseInfo },
+      }));
     },
     backupKeys: async (passphrase: string, passphraseId: string) => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       if (!passphrase) {
-        throw new Error("passphrase is not set");
+        throw new Error('passphrase is not set');
       }
       if (!passphraseId) {
-        throw new Error("passphraseId is not set");
+        throw new Error('passphraseId is not set');
       }
 
       await fireblocksNCW.backupKeys(passphrase, passphraseId);
     },
-    recoverKeys: async (passphraseResolver: (passphraseId: string) => Promise<string>) => {
+    recoverKeys: async (
+      passphraseResolver: (passphraseId: string) => Promise<string>
+    ) => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       await fireblocksNCW.recoverKeys(passphraseResolver);
       const keysStatus = await fireblocksNCW.getKeysStatus();
       set((state) => ({ ...state, keysStatus }));
     },
     loginToDemoAppServer: async () => {
-      set((state) => ({ ...state, userId: null, loginToDemoAppServerStatus: "started" }));
+      set((state) => ({
+        ...state,
+        userId: null,
+        loginToDemoAppServerStatus: 'started',
+      }));
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       try {
         const userId = await apiService.login();
         set((state) => ({
           ...state,
           userId,
-          loginToDemoAppServerStatus: "success",
+          loginToDemoAppServerStatus: 'success',
           deviceId: getOrCreateDeviceId(userId),
         }));
       } catch (e) {
-        console.error("xxx", e);
-        set((state) => ({ ...state, userId: null, loginToDemoAppServerStatus: "failed" }));
+        console.error('xxx', e);
+        set((state) => ({
+          ...state,
+          userId: null,
+          loginToDemoAppServerStatus: 'failed',
+        }));
       }
     },
     initFireblocksNCW: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       fireblocksNCW = null;
-      set((state) => ({ ...state, fireblocksNCWStatus: "initializing_sdk" }));
+      set((state) => ({ ...state, fireblocksNCWStatus: 'initializing_sdk' }));
       try {
         const messagesHandler: IMessagesHandler = {
           handleOutgoingMessage: (message: string) => {
             if (!apiService) {
-              throw new Error("apiService is not initialized");
+              throw new Error('apiService is not initialized');
             }
             const { deviceId } = get();
             if (!deviceId) {
-              throw new Error("deviceId is not set");
+              throw new Error('deviceId is not set');
             }
             return apiService.sendMessage(deviceId, message);
           },
@@ -315,27 +402,36 @@ export const useAppStore = create<IAppState>()((set, get) => {
         const eventsHandler: IEventsHandler = {
           handleEvent: (event: TEvent) => {
             switch (event.type) {
-              case "key_descriptor_changed":
+              case 'key_descriptor_changed':
                 const keysStatus: Record<TMPCAlgorithm, IKeyDescriptor> =
-                  get().keysStatus ?? ({} as Record<TMPCAlgorithm, IKeyDescriptor>);
+                  get().keysStatus ??
+                  ({} as Record<TMPCAlgorithm, IKeyDescriptor>);
                 keysStatus[event.keyDescriptor.algorithm] = event.keyDescriptor;
                 set((state) => ({ ...state, keysStatus }));
                 break;
 
-              case "transaction_signature_changed":
-                console.log(`Transaction signature status: ${event.transactionSignature.transactionSignatureStatus}`);
+              case 'transaction_signature_changed':
+                console.log(
+                  `Transaction signature status: ${event.transactionSignature.transactionSignatureStatus}`
+                );
                 break;
 
-              case "keys_backup":
-                console.log(`Key backup status: ${JSON.stringify((event as IKeyBackupEvent).keysBackup)}`);
+              case 'keys_backup':
+                console.log(
+                  `Key backup status: ${JSON.stringify((event as IKeyBackupEvent).keysBackup)}`
+                );
                 break;
 
-              case "keys_recovery":
-                console.log(`Key recover status: ${JSON.stringify((event as IKeyRecoveryEvent).keyDescriptor)}`);
+              case 'keys_recovery':
+                console.log(
+                  `Key recover status: ${JSON.stringify((event as IKeyRecoveryEvent).keyDescriptor)}`
+                );
                 break;
 
-              case "join_wallet_descriptor":
-                console.log(`join wallet event: ${JSON.stringify((event as IJoinWalletEvent).joinWalletDescriptor)}`);
+              case 'join_wallet_descriptor':
+                console.log(
+                  `join wallet event: ${JSON.stringify((event as IJoinWalletEvent).joinWalletDescriptor)}`
+                );
                 break;
             }
           },
@@ -343,7 +439,7 @@ export const useAppStore = create<IAppState>()((set, get) => {
 
         const { deviceId } = get();
         if (!deviceId) {
-          throw new Error("deviceId is not set");
+          throw new Error('deviceId is not set');
         }
         const secureStorageProvider = new PasswordEncryptedLocalStorage(
           async () => {
@@ -362,12 +458,13 @@ export const useAppStore = create<IAppState>()((set, get) => {
               }
             }
 
-            return Promise.reject(new Error("Rejected by user"));
-          });
+            return Promise.reject(new Error('Rejected by user'));
+          }
+        );
 
         fireblocksNCW = await FireblocksNCWFactory({
           env: ENV_CONFIG.NCW_SDK_ENV as TEnv,
-          logLevel: "INFO",
+          logLevel: 'INFO',
           deviceId,
           messagesHandler,
           eventsHandler,
@@ -375,25 +472,32 @@ export const useAppStore = create<IAppState>()((set, get) => {
           // logger: await IndexedDBLoggerFactory({ deviceId, logger: ConsoleLoggerFactory() }),
         });
 
-        txsUnsubscriber = apiService.listenToTxs(deviceId, (tx: ITransactionData) => {
-          const txs = updateOrAddTx(get().txs, tx);
-          set((state) => ({ ...state, txs }));
-        });
+        txsUnsubscriber = apiService.listenToTxs(
+          deviceId,
+          (tx: ITransactionData) => {
+            const txs = updateOrAddTx(get().txs, tx);
+            set((state) => ({ ...state, txs }));
+          }
+        );
         const keysStatus = await fireblocksNCW.getKeysStatus();
-        set((state) => ({ ...state, keysStatus, fireblocksNCWStatus: "sdk_available" }));
+        set((state) => ({
+          ...state,
+          keysStatus,
+          fireblocksNCWStatus: 'sdk_available',
+        }));
       } catch (e) {
         console.error(e);
         fireblocksNCW = null;
         set((state) => ({
           ...state,
           keysStatus: null,
-          fireblocksNCWStatus: "sdk_initialization_failed",
+          fireblocksNCWStatus: 'sdk_initialization_failed',
         }));
       }
     },
     clearSDKStorage: async () => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       await fireblocksNCW.clearAllStorage();
       const keysStatus = await fireblocksNCW.getKeysStatus();
@@ -401,23 +505,26 @@ export const useAppStore = create<IAppState>()((set, get) => {
     },
     createTransaction: async (dataToSend?: INewTransactionData) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
-      const newTxData = await apiService.createTransaction(deviceId, dataToSend);
+      const newTxData = await apiService.createTransaction(
+        deviceId,
+        dataToSend
+      );
       const txs = updateOrAddTx(get().txs, newTxData);
       set((state) => ({ ...state, txs }));
     },
     cancelTransaction: async (txId: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       await apiService.cancelTransaction(deviceId, txId);
       set((state) => {
@@ -429,7 +536,7 @@ export const useAppStore = create<IAppState>()((set, get) => {
           ...state,
           txs: [
             ...state.txs.slice(0, index),
-            { ...state.txs[index], status: "CANCELLING" },
+            { ...state.txs[index], status: 'CANCELLING', id: txId }, //TODO: check this
             ...state.txs.slice(index + 1),
           ],
         };
@@ -437,11 +544,11 @@ export const useAppStore = create<IAppState>()((set, get) => {
     },
     signTransaction: async (txId: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
-      const { signTransaction } = get();
+      // const { signTransaction } = get();
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
 
       try {
@@ -461,100 +568,123 @@ export const useAppStore = create<IAppState>()((set, get) => {
     },
     getWeb3Connections: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
 
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const connections = await apiService.getWeb3Connections(deviceId);
       set((state) => ({ ...state, web3Connections: connections }));
     },
     createWeb3Connection: async (uri: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
 
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const response = await apiService.createWeb3Connection(deviceId, uri);
       set((state) => ({ ...state, pendingWeb3Connection: response }));
     },
     approveWeb3Connection: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId, pendingWeb3Connection } = get();
       if (!pendingWeb3Connection) {
-        throw new Error("no pending connection");
+        throw new Error('no pending connection');
       }
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
-      await apiService.approveWeb3Connection(deviceId, pendingWeb3Connection.id);
+      await apiService.approveWeb3Connection(
+        deviceId,
+        pendingWeb3Connection.id
+      );
       set((state) => ({ ...state, pendingWeb3Connection: null }));
     },
     denyWeb3Connection: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId, pendingWeb3Connection } = get();
       if (!pendingWeb3Connection) {
-        throw new Error("no pending connection");
+        throw new Error('no pending connection');
       }
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       await apiService.denyWeb3Connection(deviceId, pendingWeb3Connection.id);
       set((state) => ({ ...state, pendingWeb3Connection: null }));
     },
     removeWeb3Connection: async (sessionId: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       await apiService.removeWeb3Connection(deviceId, sessionId);
 
-      set((state) => ({ ...state, web3Connections: state.web3Connections.filter((s) => s.id !== sessionId) }));
+      set((state) => ({
+        ...state,
+        web3Connections: state.web3Connections.filter(
+          (s) => s.id !== sessionId
+        ),
+      }));
     },
     generateMPCKeys: async () => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       // TODO: consolidate
       // const ALGORITHMS = new Set<TMPCAlgorithm>(["MPC_CMP_ECDSA_SECP256K1"]);
-      const ALGORITHMS = new Set<TMPCAlgorithm>(["MPC_ECDSA_SECP256K1"]);
+      const ALGORITHMS = new Set<TMPCAlgorithm>(['MPC_ECDSA_SECP256K1']);
       await fireblocksNCW.generateMPCKeys(ALGORITHMS);
     },
     stopMpcDeviceSetup: async () => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       await fireblocksNCW.stopMpcDeviceSetup();
     },
     takeover: async () => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       return fireblocksNCW.takeover();
     },
-    exportFullKeys: (chainCode: string, cloudKeyShares: Map<string, string[]>) => {
+    exportFullKeys: (
+      chainCode: string,
+      cloudKeyShares: Map<string, string[]>
+    ) => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
       return fireblocksNCW.exportFullKeys(chainCode, cloudKeyShares);
     },
-    deriveAssetKey: (extendedPrivateKey: string, coinType: number, account: number, change: number, index: number) => {
+    deriveAssetKey: (
+      extendedPrivateKey: string,
+      coinType: number,
+      account: number,
+      change: number,
+      index: number
+    ) => {
       if (!fireblocksNCW) {
-        throw new Error("fireblocksNCW is not initialized");
+        throw new Error('fireblocksNCW is not initialized');
       }
-      return fireblocksNCW.deriveAssetKey(extendedPrivateKey, coinType, account, change, index);
+      return fireblocksNCW.deriveAssetKey(
+        extendedPrivateKey,
+        coinType,
+        account,
+        change,
+        index
+      );
     },
     disposeFireblocksNCW: () => {
       if (!fireblocksNCW) {
@@ -568,84 +698,100 @@ export const useAppStore = create<IAppState>()((set, get) => {
 
       fireblocksNCW.dispose();
       fireblocksNCW = null;
-      set((state) => ({ ...state, fireblocksNCWStatus: "sdk_not_ready" }));
+      set((state) => ({ ...state, fireblocksNCWStatus: 'sdk_not_ready' }));
     },
 
     addAsset: async (accountId: number, assetId: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const address = await apiService.addAsset(deviceId, accountId, assetId);
       const asset = await apiService.getAsset(deviceId, accountId, assetId);
       set((state) => ({
         ...state,
         accounts: state.accounts.map((assets, index) =>
-          index === accountId ? { ...assets, ...{ [assetId]: { asset, address } } } : assets,
+          index === accountId
+            ? { ...assets, ...{ [assetId]: { asset, address } } }
+            : assets
         ),
       }));
     },
 
     refreshAccounts: async () => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const allAccounts = await apiService.getAccounts(deviceId);
 
       set((state) => ({
         ...state,
-        accounts: Array.from({ length: allAccounts.length }, (_v, i) => ({ ...state.accounts[i] })),
+        accounts: Array.from({ length: allAccounts.length }, (_v, i) => ({
+          ...state.accounts[i],
+        })),
       }));
 
       // refresh all
       const { refreshAssets, refreshAddress, refreshBalance } = get();
       await Promise.all(get().accounts.map((_v, id) => refreshAssets(id)));
       await Promise.all([
-        ...get().accounts.flatMap((v, id) => Object.keys(v).map((assetId) => refreshAddress(id, assetId))),
-        ...get().accounts.flatMap((v, id) => Object.keys(v).map((assetId) => refreshBalance(id, assetId))),
+        ...get().accounts.flatMap((v, id) =>
+          Object.keys(v).map((assetId) => refreshAddress(id, assetId))
+        ),
+        ...get().accounts.flatMap((v, id) =>
+          Object.keys(v).map((assetId) => refreshBalance(id, assetId))
+        ),
       ]);
     },
 
     refreshAssets: async (accountId: number) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const assets = await apiService.getAssets(deviceId, accountId);
-      const reduced = assets.reduce<Record<string, { asset: IWalletAsset }>>((acc, asset) => {
-        acc[asset.id] = { asset };
-        return acc;
-      }, {});
+      const reduced = assets.reduce<Record<string, { asset: IWalletAsset }>>(
+        (acc, asset) => {
+          acc[asset.id] = { asset };
+          return acc;
+        },
+        {}
+      );
 
       set((state) => ({
         ...state,
-        accounts: state.accounts.map((v, i) => (i === accountId ? { ...reduced, ...v } : v)),
+        accounts: state.accounts.map((v, i) =>
+          i === accountId ? { ...reduced, ...v } : v
+        ),
       }));
     },
 
     refreshSupportedAssets: async (accountId: number) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const assets = await apiService.getSupportedAssets(deviceId, accountId);
-      const reduced = assets.reduce<Record<string, IWalletAsset>>((acc, asset) => {
-        acc[asset.id] = asset;
-        return acc;
-      }, {});
+      const reduced = assets.reduce<Record<string, IWalletAsset>>(
+        (acc, asset) => {
+          acc[asset.id] = asset;
+          return acc;
+        },
+        {}
+      );
 
       set((state) => ({
         ...state,
@@ -658,36 +804,46 @@ export const useAppStore = create<IAppState>()((set, get) => {
 
     refreshBalance: async (accountId: number, assetId: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const balance = await apiService.getBalance(deviceId, accountId, assetId);
 
       set((state) => ({
         ...state,
         accounts: state.accounts.map((v, i) =>
-          i === accountId ? { ...v, ...{ [assetId]: { ...v[assetId], balance } } } : v,
+          i === accountId
+            ? {
+                ...v,
+                ...({ [assetId]: { ...v[assetId], balance } } as TAccount),
+              }
+            : v
         ),
       }));
     },
 
     refreshAddress: async (accountId: number, assetId: string) => {
       if (!apiService) {
-        throw new Error("apiService is not initialized");
+        throw new Error('apiService is not initialized');
       }
       const { deviceId } = get();
       if (!deviceId) {
-        throw new Error("deviceId is not set");
+        throw new Error('deviceId is not set');
       }
       const address = await apiService.getAddress(deviceId, accountId, assetId);
 
       set((state) => ({
         ...state,
         accounts: state.accounts.map((v, i) =>
-          i === accountId ? { ...v, ...{ [assetId]: { ...v[assetId], address } } } : v,
+          i === accountId
+            ? ({
+                ...v,
+                ...{ [assetId]: { ...v[assetId], address } },
+              } as TAccount)
+            : v
         ),
       }));
     },

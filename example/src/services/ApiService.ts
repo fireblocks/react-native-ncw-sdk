@@ -1,16 +1,20 @@
-import type { IBackupInfo, INewTransactionData, IPassphraseInfo } from "../IAppState";
-import type { IAuthManager } from "../auth/IAuthManager";
-import { Manager, Socket, io } from "socket.io-client";
+import type {
+  IBackupInfo,
+  INewTransactionData,
+  IPassphraseInfo,
+} from '../IAppState';
+import type { IAuthManager } from '../auth/IAuthManager';
+import { Manager, Socket } from 'socket.io-client';
 
 export type TTransactionStatus =
-  | "PENDING_SIGNATURE"
-  | "SUBMITTED"
-  | "FAILED"
-  | "COMPLETED"
-  | "CANCELLED"
-  | "CONFIRMING"
-  | "QUEUED"
-  | "CANCELLING";
+  | 'PENDING_SIGNATURE'
+  | 'SUBMITTED'
+  | 'FAILED'
+  | 'COMPLETED'
+  | 'CANCELLED'
+  | 'CONFIRMING'
+  | 'QUEUED'
+  | 'CANCELLING';
 
 export interface ITransferPeer {
   id: string;
@@ -94,7 +98,7 @@ export interface IWeb3Session {
   ncwId?: string;
   ncwAccountId?: number;
   chainIds?: string[];
-  feeLevel: "HIGH" | "MEDIUM";
+  feeLevel: 'HIGH' | 'MEDIUM';
   creationDate: string;
   sessionMetadata?: ISessionMetadata;
 }
@@ -157,7 +161,7 @@ export interface IAssetBalance {
 export type TMessageHandler = (message: any) => Promise<void>;
 export type TTxHandler = (tx: ITransactionData) => void;
 
-export type TPassphraseLocation = "GoogleDrive" | "iCloud";
+export type TPassphraseLocation = 'GoogleDrive' | 'iCloud';
 
 const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
@@ -172,20 +176,21 @@ export class ApiService {
 
   constructor(
     baseUrl: string,
-    private readonly authManager: IAuthManager,
+    private readonly authManager: IAuthManager
   ) {
     this._baseUrl = baseUrl;
-    if (this._baseUrl.endsWith("/")) {
+    if (this._baseUrl.endsWith('/')) {
       this._baseUrl = this._baseUrl.slice(0, -1);
     }
 
     this.manager = new Manager(this._baseUrl, { autoConnect: true });
-    this.socket = this.manager.socket("/", {
-      auth: async (cb) => cb({ token: await this.authManager.getAccessToken() }),
+    this.socket = this.manager.socket('/', {
+      auth: async (cb) =>
+        cb({ token: await this.authManager.getAccessToken() }),
     });
 
-    this.socket.on("connect", () => console.log("websocket connected"));
-    this.socket.on("disconnect", () => console.log("websocket disconnected"));
+    this.socket.on('connect', () => console.log('websocket connected'));
+    this.socket.on('disconnect', () => console.log('websocket disconnected'));
   }
 
   public async login(): Promise<string> {
@@ -200,27 +205,38 @@ export class ApiService {
   }
 
   public async getLatestBackup(walletId: string): Promise<IBackupInfo | null> {
-    const response = await this._getCall(`api/wallets/${walletId}/backup/latest`);
+    const response = await this._getCall(
+      `api/wallets/${walletId}/backup/latest`
+    );
     if (response.status >= 200 && response.status < 300) {
       return await response.json();
     } else if (response.status === 404) {
       return null;
     } else {
-      throw new Error("Failed to get latest backup");
+      throw new Error('Failed to get latest backup');
     }
   }
 
-  public async getPassphraseInfo(passphraseId: string): Promise<{ location: TPassphraseLocation }> {
+  public async getPassphraseInfo(
+    passphraseId: string
+  ): Promise<{ location: TPassphraseLocation }> {
     const response = await this._getCall(`api/passphrase/${passphraseId}`);
     return await response.json();
   }
 
-  public async createPassphraseInfo(passphraseId: string, location: TPassphraseLocation) {
-    const response = await this._postCall(`api/passphrase/${passphraseId}`, { location });
+  public async createPassphraseInfo(
+    passphraseId: string,
+    location: TPassphraseLocation
+  ) {
+    const response = await this._postCall(`api/passphrase/${passphraseId}`, {
+      location,
+    });
     return response;
   }
 
-  public async getPassphraseInfos(): Promise<{ passphrases: IPassphraseInfo[] }> {
+  public async getPassphraseInfos(): Promise<{
+    passphrases: IPassphraseInfo[];
+  }> {
     const response = await this._getCall(`api/passphrase/`);
     return await response.json();
   }
@@ -230,86 +246,158 @@ export class ApiService {
     return response.walletId;
   }
 
-  public async askToJoinWalletExisting(deviceId: string, walletId: string): Promise<string> {
-    const response = await this._postCall(`api/devices/${deviceId}/join`, { walletId });
+  public async askToJoinWalletExisting(
+    deviceId: string,
+    walletId: string
+  ): Promise<string> {
+    const response = await this._postCall(`api/devices/${deviceId}/join`, {
+      walletId,
+    });
     return response.walletId;
   }
 
   public async sendMessage(deviceId: string, message: string): Promise<any> {
     if (this.socket.connected) {
-      return await this.socket.emitWithAck("rpc", deviceId, message);
+      return await this.socket.emitWithAck('rpc', deviceId, message);
     } else {
       return this._postCall(`api/devices/${deviceId}/rpc`, { message });
     }
   }
 
   public async getWeb3Connections(deviceId: string): Promise<IWeb3Session[]> {
-    const response = await this._getCall(`api/devices/${deviceId}/web3/connections`);
+    const response = await this._getCall(
+      `api/devices/${deviceId}/web3/connections`
+    );
     return await response.json();
   }
 
-  public async createWeb3Connection(deviceId: string, uri: string): Promise<ICreateWeb3ConnectionResponse> {
-    const response = await this._postCall(`api/devices/${deviceId}/web3/connections`, { uri });
+  public async createWeb3Connection(
+    deviceId: string,
+    uri: string
+  ): Promise<ICreateWeb3ConnectionResponse> {
+    const response = await this._postCall(
+      `api/devices/${deviceId}/web3/connections`,
+      { uri }
+    );
     return response;
   }
 
-  public async approveWeb3Connection(deviceId: string, sessionId: string): Promise<void> {
-    const response = await this._postCall(`api/devices/${deviceId}/web3/connections/${sessionId}/approve`);
+  public async approveWeb3Connection(
+    deviceId: string,
+    sessionId: string
+  ): Promise<void> {
+    const response = await this._postCall(
+      `api/devices/${deviceId}/web3/connections/${sessionId}/approve`
+    );
     return response;
   }
 
-  public async denyWeb3Connection(deviceId: string, sessionId: string): Promise<void> {
-    const response = await this._postCall(`api/devices/${deviceId}/web3/connections/${sessionId}/deny`);
+  public async denyWeb3Connection(
+    deviceId: string,
+    sessionId: string
+  ): Promise<void> {
+    const response = await this._postCall(
+      `api/devices/${deviceId}/web3/connections/${sessionId}/deny`
+    );
     return response;
   }
 
   public async removeWeb3Connection(deviceId: string, sessionId: string) {
-    const response = await this._deleteCall(`api/devices/${deviceId}/web3/connections/${sessionId}`);
+    const response = await this._deleteCall(
+      `api/devices/${deviceId}/web3/connections/${sessionId}`
+    );
     return response;
   }
 
-  public async createTransaction(deviceId: string, dataToSend?: INewTransactionData): Promise<ITransactionData> {
-    const createTxResponse = await this._postCall(`api/devices/${deviceId}/transactions`, dataToSend);
+  public async createTransaction(
+    deviceId: string,
+    dataToSend?: INewTransactionData
+  ): Promise<ITransactionData> {
+    const createTxResponse = await this._postCall(
+      `api/devices/${deviceId}/transactions`,
+      dataToSend
+    );
     return createTxResponse;
   }
 
-  public async cancelTransaction(deviceId: string, txId: string): Promise<void> {
-    const response = await this._postCall(`api/devices/${deviceId}/transactions/${txId}/cancel`);
+  public async cancelTransaction(
+    deviceId: string,
+    txId: string
+  ): Promise<void> {
+    const response = await this._postCall(
+      `api/devices/${deviceId}/transactions/${txId}/cancel`
+    );
     return response;
   }
 
-  public async addAsset(deviceId: string, accountId: number, assetId: string): Promise<IAssetAddress> {
-    const response = await this._postCall(`api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}`);
+  public async addAsset(
+    deviceId: string,
+    accountId: number,
+    assetId: string
+  ): Promise<IAssetAddress> {
+    const response = await this._postCall(
+      `api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}`
+    );
     return await response;
   }
 
-  public async getAsset(deviceId: string, accountId: number, assetId: string): Promise<IWalletAsset> {
-    const response = await this._getCall(`api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}`);
+  public async getAsset(
+    deviceId: string,
+    accountId: number,
+    assetId: string
+  ): Promise<IWalletAsset> {
+    const response = await this._getCall(
+      `api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}`
+    );
     return await response.json();
   }
 
-  public async getAccounts(deviceId: string): Promise<{ walletId: string; accountId: number }[]> {
+  public async getAccounts(
+    deviceId: string
+  ): Promise<{ walletId: string; accountId: number }[]> {
     const response = await this._getCall(`api/devices/${deviceId}/accounts/`);
     return await response.json();
   }
 
-  public async getAssets(deviceId: string, accountId: number): Promise<IWalletAsset[]> {
-    const response = await this._getCall(`api/devices/${deviceId}/accounts/${accountId}/assets`);
+  public async getAssets(
+    deviceId: string,
+    accountId: number
+  ): Promise<IWalletAsset[]> {
+    const response = await this._getCall(
+      `api/devices/${deviceId}/accounts/${accountId}/assets`
+    );
     return await response.json();
   }
 
-  public async getSupportedAssets(deviceId: string, accountId: number): Promise<IWalletAsset[]> {
-    const response = await this._getCall(`api/devices/${deviceId}/accounts/${accountId}/assets/supported_assets`);
+  public async getSupportedAssets(
+    deviceId: string,
+    accountId: number
+  ): Promise<IWalletAsset[]> {
+    const response = await this._getCall(
+      `api/devices/${deviceId}/accounts/${accountId}/assets/supported_assets`
+    );
     return await response.json();
   }
 
-  public async getAddress(deviceId: string, accountId: number, assetId: string): Promise<IAssetAddress> {
-    const response = await this._getCall(`api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}/address`);
+  public async getAddress(
+    deviceId: string,
+    accountId: number,
+    assetId: string
+  ): Promise<IAssetAddress> {
+    const response = await this._getCall(
+      `api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}/address`
+    );
     return await response.json();
   }
 
-  public async getBalance(deviceId: string, accountId: number, assetId: string): Promise<IAssetBalance> {
-    const response = await this._getCall(`api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}/balance`);
+  public async getBalance(
+    deviceId: string,
+    accountId: number,
+    assetId: string
+  ): Promise<IAssetBalance> {
+    const response = await this._getCall(
+      `api/devices/${deviceId}/accounts/${accountId}/assets/${assetId}/balance`
+    );
     return await response.json();
   }
 
@@ -358,7 +446,7 @@ export class ApiService {
     while (!this._disposed) {
       try {
         const response = await this._getCall(
-          `api/devices/${deviceId}/transactions?poll=true&startDate=${startDate}&details=true`,
+          `api/devices/${deviceId}/transactions?poll=true&startDate=${startDate}&details=true`
         );
         if (!response.ok) {
           await sleep(5_000);
@@ -387,28 +475,30 @@ export class ApiService {
           }
         }
       } catch (e) {
-        console.error("failed to get txs", e);
+        console.error('failed to get txs', e);
         await sleep(5_000);
       }
     }
   }
 
   private async _postCall(path: string, body?: Object): Promise<any> {
-    if (path.startsWith("/")) {
+    if (path.startsWith('/')) {
       path = path.slice(1);
     }
     const token = await this.authManager.getAccessToken();
     const response = await fetch(`${this._baseUrl}/${path}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(body ?? {}),
     });
 
     if (!response.ok) {
-      throw new Error(`A call to "${path}" failed with status ${response.status}`);
+      throw new Error(
+        `A call to "${path}" failed with status ${response.status}`
+      );
     }
     const responseJson = await response.json();
     return responseJson;
@@ -417,7 +507,7 @@ export class ApiService {
   private async _deleteCall(path: string): Promise<void> {
     const token = await this.authManager.getAccessToken();
     await fetch(`${this._baseUrl}/${path}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         authorization: `Bearer ${token}`,
       },
@@ -427,7 +517,7 @@ export class ApiService {
   private async _getCall(path: string): Promise<Response> {
     const token = await this.authManager.getAccessToken();
     const response = await fetch(`${this._baseUrl}/${path}`, {
-      method: "GET",
+      method: 'GET',
       headers: {
         authorization: `Bearer ${token}`,
       },

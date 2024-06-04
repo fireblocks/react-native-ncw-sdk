@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface IProps {
   title: string;
@@ -8,15 +8,24 @@ interface IProps {
   onNo: () => void;
 }
 
-export const AreYouSureDialog: React.FC<IProps> = ({ title, children, onYes, onNo, isOpen }) => {
-  let modalClassName = "modal modal-bottom sm:modal-middle";
+export const AreYouSureDialog: React.FC<IProps> = ({
+  title,
+  children,
+  onYes,
+  onNo,
+  isOpen,
+}) => {
+  let modalClassName = 'modal modal-bottom sm:modal-middle';
   if (isOpen) {
-    modalClassName += " modal-open";
+    modalClassName += ' modal-open';
   }
   return (
     <div className={modalClassName}>
       <div className="modal-box">
-        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" onClick={onNo}>
+        <button
+          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+          onClick={onNo}
+        >
           ✕
         </button>
         <h3 className="font-bold text-lg">{title}</h3>

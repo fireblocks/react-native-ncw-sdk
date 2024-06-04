@@ -1,5 +1,5 @@
-import { TAsyncActionStatus, TFireblocksNCWStatus } from "./AppStore";
-import {
+import type { TAsyncActionStatus, TFireblocksNCWStatus } from './AppStore';
+import type {
   IAssetAddress,
   IAssetBalance,
   ICreateWeb3ConnectionResponse,
@@ -7,10 +7,14 @@ import {
   IWalletAsset,
   IWeb3Session,
   TPassphraseLocation,
-} from "./services/ApiService";
-import { IUser } from "./auth/IAuthManager";
+} from './services/ApiService';
+import type { IUser } from './auth/IAuthManager';
 
-import type { TMPCAlgorithm, IFullKey, IKeyDescriptor } from "@fireblocks/react-native-ncw-sdk";
+import type {
+  TMPCAlgorithm,
+  IFullKey,
+  IKeyDescriptor,
+} from '@fireblocks/react-native-ncw-sdk';
 
 export interface IAssetInfo {
   asset: IWalletAsset;
@@ -23,9 +27,9 @@ export interface IPassphraseInfo {
   location: TPassphraseLocation;
 }
 
-type TAccount = Record<string, IAssetInfo>;
-type TSupportedAssets = Record<string, IWalletAsset>;
-export type TAppMode = "SIGN_IN" | "JOIN" | null;
+export type TAccount = Record<string, IAssetInfo>;
+export type TSupportedAssets = Record<string, IWalletAsset>;
+export type TAppMode = 'SIGN_IN' | 'JOIN' | null;
 export type TPassphrases = Record<string, IPassphraseInfo>;
 
 export interface IBackupInfo {
@@ -40,7 +44,7 @@ export interface INewTransactionData {
   assetId: string;
   amount?: string;
   destAddress?: string;
-  feeLevel?: "LOW" | "MEDIUM" | "HIGH";
+  feeLevel?: 'LOW' | 'MEDIUM' | 'HIGH';
   estimateFee?: boolean;
 }
 
@@ -71,7 +75,7 @@ export interface IAppState {
   initAppStore: () => void;
   disposeAppStore: () => void;
   getGoogleDriveCredentials: () => Promise<string>;
-  login(provider: "GOOGLE" | "APPLE"): Promise<void>;
+  login(provider: 'GOOGLE' | 'APPLE'): Promise<void>;
   setAppMode: (mode: TAppMode) => void;
   logout: () => Promise<void>;
   clearSDKStorage: () => Promise<void>;
@@ -87,13 +91,16 @@ export interface IAppState {
   cancelTransaction: (txId: string) => Promise<void>;
   signTransaction: (txId: string) => Promise<void>;
   takeover: () => Promise<IFullKey[]>;
-  exportFullKeys: (chainCode: string, cloudKeyShares: Map<string, string[]>) => Promise<IFullKey[]>;
+  exportFullKeys: (
+    chainCode: string,
+    cloudKeyShares: Map<string, string[]>
+  ) => Promise<IFullKey[]>;
   deriveAssetKey: (
     extendedPrivateKey: string,
     coinType: number,
     account: number,
     change: number,
-    index: number,
+    index: number
   ) => string;
   setPassphrase: (passphrase: string) => void;
   approveJoinWallet: (requestData?: string) => Promise<void>;
@@ -102,8 +109,13 @@ export interface IAppState {
   regeneratePassphrase: () => void;
   getPassphraseInfos: () => Promise<void>;
   getLatestBackup: () => Promise<void>;
-  createPassphraseInfo: (passphraseId: string, location: TPassphraseLocation) => Promise<void>;
-  recoverKeys: (passphraseResolver: (passphraseId: string) => Promise<string>) => Promise<void>;
+  createPassphraseInfo: (
+    passphraseId: string,
+    location: TPassphraseLocation
+  ) => Promise<void>;
+  recoverKeys: (
+    passphraseResolver: (passphraseId: string) => Promise<string>
+  ) => Promise<void>;
   backupKeys: (passhrase: string, passphraseId: string) => Promise<void>;
   initFireblocksNCW: () => Promise<void>;
   disposeFireblocksNCW: () => void;

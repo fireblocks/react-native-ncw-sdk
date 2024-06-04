@@ -1,12 +1,18 @@
-import React from "react";
-import { useAppStore } from "../AppStore";
-import { IActionButtonProps } from "./ui/ActionButton";
-import { Card } from "./ui/Card";
-import { Text, View } from "react-native";
-import Svg, { Path } from "react-native-svg";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
+import { useAppStore } from '../AppStore';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Card } from './ui/Card';
+import { Text, View } from 'react-native';
+// import Svg, { Path } from 'react-native-svg';
 
 export const LoginToDemoAppServer: React.FC = () => {
-  const { userId, loginToDemoAppServerStatus, automateInitialization, loginToDemoAppServer } = useAppStore();
+  const {
+    userId,
+    loginToDemoAppServerStatus,
+    automateInitialization,
+    loginToDemoAppServer,
+  } = useAppStore();
 
   React.useEffect(() => {
     if (automateInitialization && userId === null) {
@@ -16,9 +22,9 @@ export const LoginToDemoAppServer: React.FC = () => {
 
   const cardAction: IActionButtonProps = {
     action: loginToDemoAppServer,
-    isDisabled: loginToDemoAppServerStatus === "started" || !!userId,
-    isInProgress: loginToDemoAppServerStatus === "started",
-    label: "Login to the Demo App Server",
+    isDisabled: loginToDemoAppServerStatus === 'started' || !!userId,
+    isInProgress: loginToDemoAppServerStatus === 'started',
+    label: 'Login to the Demo App Server',
   };
 
   return (
@@ -26,11 +32,11 @@ export const LoginToDemoAppServer: React.FC = () => {
       {userId && (
         <View /*className="mockup-code"*/>
           {/* <pre> */}
-            <Text>User ID: {userId}</Text>
+          <Text>User ID: {userId}</Text>
           {/* </pre> */}
         </View>
       )}
-      {loginToDemoAppServerStatus === "failed" && (
+      {loginToDemoAppServerStatus === 'failed' && (
         <View /*className="alert alert-error shadow-lg"*/>
           <View>
             {/* <Svg

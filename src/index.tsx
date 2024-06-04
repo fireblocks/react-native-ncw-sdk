@@ -24,7 +24,7 @@ export const ReactNativeNcwSdk = ReactNativeNcwSdkModule
       }
     );
 
-export * from "./interfaces";
-export * from "./types";
+export * from './interfaces';
+export * from './types';
 
-export { FireblocksNCWFactory } from "./FireblocksNCWFactory";
+export { FireblocksNCWFactory } from './FireblocksNCWFactory';

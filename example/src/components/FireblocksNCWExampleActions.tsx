@@ -1,14 +1,15 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
 
-import { GenerateMPCKeys } from "./GenerateMPCKeys";
-import { Takeover } from "./Takeover";
-import { BackupAndRecover } from "./BackupAndRecover";
-import { Assets } from "./Assets";
-import { Transactions } from "./Transactions";
-import { Web3 } from "./Web3";
-import { useAppStore } from "../AppStore";
-import { Text } from "react-native";
-import { JoinExistingWallet } from "./JoinExistingWallet";
+import { GenerateMPCKeys } from './GenerateMPCKeys';
+import { Takeover } from './Takeover';
+import { BackupAndRecover } from './BackupAndRecover';
+import { Assets } from './Assets';
+import { Transactions } from './Transactions';
+// import { Web3 } from './Web3';
+import { useAppStore } from '../AppStore';
+// import { Text } from 'react-native';
+import { JoinExistingWallet } from './JoinExistingWallet';
 
 export const FireblocksNCWExampleActions: React.FC = () => {
   const { keysStatus, joinExistingWalletMode } = useAppStore();
@@ -16,7 +17,7 @@ export const FireblocksNCWExampleActions: React.FC = () => {
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
   const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
 
-  const hasAKey = secP256K1Status === "READY" || ed25519Status === "READY";
+  const hasAKey = secP256K1Status === 'READY' || ed25519Status === 'READY';
 
   return (
     <>
