@@ -2005,6 +2005,7 @@ __metadata:
     react-qr-code: ^2.0.12
     rn-secure-storage: ^3.0.1
     socket.io-client: ^4.7.4
+    tsl-apple-cloudkit: ^0.2.31
     zustand: ^4.5.0
   languageName: unknown
   linkType: soft
@@ -12784,6 +12785,15 @@ __metadata:
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
   checksum: fde256c9073969e234526e2cfead42591b9a2aec5222bac154b0de2fa9e4ceb30efcd717ee8bc785a56f3a119bdd5aa27b333d9dbec94ed254bd26f8944c67ac
+  languageName: node
+  linkType: hard
+
+"tsl-apple-cloudkit@npm:^0.2.31":
+  version: 0.2.31
+  resolution: "tsl-apple-cloudkit@npm:0.2.31"
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 6f8d3e8c15564fe01fc3a9d1ccfe034cb98bdebafec8e37f55b8812708423b7c1d5c4f64e4ec091f27ef084a7b9f5dfd7e60cc622ead5d399a61bff6daaf49f4
   languageName: node
   linkType: hard
 

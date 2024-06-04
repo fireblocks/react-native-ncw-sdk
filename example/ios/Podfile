@@ -28,7 +28,7 @@ end
 target 'ReactNativeNcwSdkExample' do
   config = use_native_modules!
 
-  # spm_pkg "FireblocksSDK", :url => "https://github.com/fireblocks/ncw-ios-sdk.git", :tag => "2.4.0"
+  # spm_pkg "FireblocksSDK", :url => "https://github.com/fireblocks/ncw-ios-sdk.git", :tag => "2.5.0"
 
   pod 'Firebase', :modular_headers => true
   pod 'FirebaseCore', :modular_headers => true
