@@ -163,6 +163,7 @@
     "jsSrcsDir": "src"
   },
   "dependencies": {
+    "@fireblocks/react-native-ncw-sdk": "^1.0.0",
     "semver": "^7.6.2"
   }
 }
