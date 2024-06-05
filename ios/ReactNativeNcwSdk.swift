@@ -323,7 +323,9 @@ class ReactNativeNcwSdk : RCTEventEmitter {
             let status = instance.getKeysStatus()
             var response: [String: Any] = [:]
             for key in status {
-                response[key.algorithm.rawValue] = try key.asDictionary()
+                if let algorithm = key.algorithm?.rawValue {
+                    response[algorithm] = try key.asDictionary()
+                }
             }
             resolve(response)
         } catch let err {
