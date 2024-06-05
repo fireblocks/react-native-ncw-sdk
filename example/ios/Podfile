@@ -49,7 +49,7 @@ target 'ReactNativeNcwSdkExample' do
   # target 'ReactNativeNcwSdkExampleTests' do
   #   inherit! :complete
   #   # Pods for testing
-  end
+  # end
 
   post_install do |installer|
     $RNNCWSDK.post_install(installer)
