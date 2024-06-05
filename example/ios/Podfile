@@ -46,9 +46,9 @@ target 'ReactNativeNcwSdkExample' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'ReactNativeNcwSdkExampleTests' do
-    inherit! :complete
-    # Pods for testing
+  # target 'ReactNativeNcwSdkExampleTests' do
+  #   inherit! :complete
+  #   # Pods for testing
   end
 
   post_install do |installer|
