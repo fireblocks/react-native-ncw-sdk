@@ -643,8 +643,11 @@ export const useAppStore = create<IAppState>()((set, get) => {
         throw new Error('fireblocksNCW is not initialized');
       }
       // TODO: consolidate
-      // const ALGORITHMS = new Set<TMPCAlgorithm>(["MPC_CMP_ECDSA_SECP256K1"]);
-      const ALGORITHMS = new Set<TMPCAlgorithm>(['MPC_ECDSA_SECP256K1']);
+
+      const ALGORITHMS = new Set<TMPCAlgorithm>([
+        'MPC_ECDSA_SECP256K1',
+        'MPC_EDDSA_ED25519',
+      ]);
       await fireblocksNCW.generateMPCKeys(ALGORITHMS);
     },
     stopMpcDeviceSetup: async () => {

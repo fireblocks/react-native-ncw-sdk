@@ -1,4 +1,3 @@
-/* eslint-disable no-catch-shadow */
 import React from 'react';
 
 import { useAppStore } from '../AppStore';
@@ -36,12 +35,12 @@ export const GenerateMPCKeys: React.FC = () => {
       await generateMPCKeys();
       setGenerateMPCKeysResult('Success');
       setIsGenerateInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
       } else {
-        if (typeof err === 'string') {
-          setErr(err);
+        if (typeof e === 'string') {
+          setErr(e);
         } else {
           setErr('Unknown Error');
         }
@@ -57,9 +56,9 @@ export const GenerateMPCKeys: React.FC = () => {
     try {
       await stopMpcDeviceSetup();
       setIsStopInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
       } else {
         setErr('Unknown Error');
       }
@@ -69,6 +68,8 @@ export const GenerateMPCKeys: React.FC = () => {
   };
 
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
+  const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
+
   const statusToProgress = (status: TKeyStatus | null) => {
     switch (status) {
       case 'INITIATED':
@@ -86,11 +87,12 @@ export const GenerateMPCKeys: React.FC = () => {
     }
   };
   const secP256K1Ready = secP256K1Status === 'READY';
+  const ed25519Ready = ed25519Status === 'READY';
 
   const generateAction: IActionButtonProps = {
     label: 'Generate MPC Keys',
     action: doGenerateMPCKeys,
-    isDisabled: isGenerateInProgress || secP256K1Ready,
+    isDisabled: isGenerateInProgress || (secP256K1Ready && ed25519Ready),
     isInProgress: isGenerateInProgress,
   };
 
@@ -104,7 +106,9 @@ export const GenerateMPCKeys: React.FC = () => {
   const approveJoinWalletAction: IActionButtonProps = {
     label: 'Approve Join Wallet',
     action: () => setShowScanQr(true),
-    isDisabled: (isStopInProgress || isGenerateInProgress) && secP256K1Ready,
+    isDisabled:
+      (isStopInProgress || isGenerateInProgress) &&
+      (ed25519Ready || secP256K1Ready),
   };
   const stopApproveWalletAction: IActionButtonProps = {
     label: 'Stop Approve Join Wallet',
@@ -144,9 +148,9 @@ export const GenerateMPCKeys: React.FC = () => {
             try {
               await approveJoinWallet(code);
               setShowScanQr(false);
-            } catch (err: unknown) {
-              if (err instanceof Error) {
-                setErr(err.message);
+            } catch (e: unknown) {
+              if (e instanceof Error) {
+                setErr(e.message);
               } else {
                 setErr('Unknown Error');
               }
