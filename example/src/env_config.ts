@@ -1,7 +1,7 @@
 export const ENV_CONFIG = {
   // TODO: read from environment variables
   NCW_SDK_ENV: 'sandbox',
-  BACKEND_BASE_URL: 'https://api-sb-1.ncw-demo.com',
+  BACKEND_BASE_URL: 'https://api-sb.ncw-demo.com',
   DEV_MODE: true,
   AUTOMATE_INITIALIZATION: false,
   // TODO: add CloudKit configuration here
