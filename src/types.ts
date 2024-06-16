@@ -53,7 +53,7 @@ export type TTransactionSignatureStatus =
 
 export type TLogLevel = 'VERBOSE' | 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
-export type TEnv = 'sandbox' | 'production';
+export type TEnv = 'sandbox' | 'production' | 'dev9';
 
 export type TEvent =
   | IKeyDescriptorChangedEvent
