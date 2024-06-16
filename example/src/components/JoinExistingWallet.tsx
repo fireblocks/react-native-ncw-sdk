@@ -55,6 +55,8 @@ export const JoinExistingWallet: React.FC = () => {
   };
 
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
+  const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
+
   const statusToProgress = (status: TKeyStatus | null) => {
     switch (status) {
       case 'INITIATED':
@@ -71,7 +73,7 @@ export const JoinExistingWallet: React.FC = () => {
         return 0;
     }
   };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   // const secP256K1Ready = secP256K1Status === 'READY';
 
   const generateAction: IActionButtonProps = {
@@ -108,8 +110,21 @@ export const JoinExistingWallet: React.FC = () => {
               statusToProgress(secP256K1Status),
             ]}
           />
+          <Row
+            data={[
+              'EDDSA ED25519',
+              ed25519Status,
+              statusToProgress(ed25519Status),
+            ]}
+          />
         </Table>
+        <Text>ECDSA SECP256K1:</Text>
         <Bar progress={statusToProgress(secP256K1Status) / 100} width={null} />
+        <Text>EDDSA ED25519:</Text>
+        <Bar
+          progress={statusToProgress(ed25519Status) / 100}
+          width={null}
+        />{' '}
       </View>
       {joinExistingWalletResult && (
         <Text>Result: {joinExistingWalletResult}</Text>

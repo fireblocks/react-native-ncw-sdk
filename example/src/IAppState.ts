@@ -85,7 +85,7 @@ export interface IAppState {
   assignCurrentDevice: () => Promise<void>;
   askToJoinWalletExisting: () => Promise<void>;
   generateNewDeviceId: () => Promise<void>;
-  generateMPCKeys: () => Promise<void>;
+  generateMPCKeys: (algorithms: Set<TMPCAlgorithm>) => Promise<void>;
   stopMpcDeviceSetup: () => Promise<void>;
   createTransaction: (dataToSend?: INewTransactionData) => Promise<void>;
   cancelTransaction: (txId: string) => Promise<void>;

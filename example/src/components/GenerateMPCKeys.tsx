@@ -9,7 +9,10 @@ import { Text, View } from 'react-native';
 import { Bar } from 'react-native-progress';
 import { QRScanner } from './QRScanner';
 
-import type { TKeyStatus } from '@fireblocks/react-native-ncw-sdk';
+import type {
+  TKeyStatus,
+  TMPCAlgorithm,
+} from '@fireblocks/react-native-ncw-sdk';
 
 export const GenerateMPCKeys: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);
@@ -32,7 +35,59 @@ export const GenerateMPCKeys: React.FC = () => {
     setErr(null);
     setIsGenerateInProgress(true);
     try {
-      await generateMPCKeys();
+      const ALGORITHMS = new Set<TMPCAlgorithm>([
+        'MPC_ECDSA_SECP256K1',
+        'MPC_EDDSA_ED25519',
+      ]);
+      await generateMPCKeys(ALGORITHMS);
+      setGenerateMPCKeysResult('Success');
+      setIsGenerateInProgress(false);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
+      } else {
+        if (typeof e === 'string') {
+          setErr(e);
+        } else {
+          setErr('Unknown Error');
+        }
+      }
+    } finally {
+      setIsGenerateInProgress(false);
+    }
+  };
+
+  const doGenerateMPCKeyECDSA = async () => {
+    setGenerateMPCKeysResult(null);
+    setErr(null);
+    setIsGenerateInProgress(true);
+    try {
+      const ALGORITHMS = new Set<TMPCAlgorithm>(['MPC_ECDSA_SECP256K1']);
+      await generateMPCKeys(ALGORITHMS);
+      setGenerateMPCKeysResult('Success');
+      setIsGenerateInProgress(false);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
+      } else {
+        if (typeof e === 'string') {
+          setErr(e);
+        } else {
+          setErr('Unknown Error');
+        }
+      }
+    } finally {
+      setIsGenerateInProgress(false);
+    }
+  };
+
+  const doGenerateMPCKeyEdDSA = async () => {
+    setGenerateMPCKeysResult(null);
+    setErr(null);
+    setIsGenerateInProgress(true);
+    try {
+      const ALGORITHMS = new Set<TMPCAlgorithm>(['MPC_EDDSA_ED25519']);
+      await generateMPCKeys(ALGORITHMS);
       setGenerateMPCKeysResult('Success');
       setIsGenerateInProgress(false);
     } catch (e: unknown) {
@@ -95,14 +150,24 @@ export const GenerateMPCKeys: React.FC = () => {
     isDisabled: isGenerateInProgress || (secP256K1Ready && ed25519Ready),
     isInProgress: isGenerateInProgress,
   };
-
+  const generateActionECDSA: IActionButtonProps = {
+    label: 'Generate MPC ECDSA Key',
+    action: doGenerateMPCKeyECDSA,
+    isDisabled: secP256K1Ready,
+    isInProgress: isGenerateInProgress,
+  };
+  const generateActionEdDSA: IActionButtonProps = {
+    label: 'Generate MPC EdDsa Key',
+    action: doGenerateMPCKeyEdDSA,
+    isDisabled: ed25519Ready,
+    isInProgress: isGenerateInProgress,
+  };
   const stopAction: IActionButtonProps = {
     label: 'Stop MPC Device Setup',
     action: doStopMPCDeviceSetup,
     isDisabled: isStopInProgress || !isGenerateInProgress,
     isInProgress: isStopInProgress,
   };
-
   const approveJoinWalletAction: IActionButtonProps = {
     label: 'Approve Join Wallet',
     action: () => setShowScanQr(true),
@@ -115,7 +180,13 @@ export const GenerateMPCKeys: React.FC = () => {
     action: stopJoinExistingWallet,
   };
 
-  const actions = [generateAction, stopAction, approveJoinWalletAction];
+  const actions = [
+    generateAction,
+    generateActionECDSA,
+    generateActionEdDSA,
+    stopAction,
+    approveJoinWalletAction,
+  ];
   if (ENV_CONFIG.DEV_MODE) {
     actions.push(stopApproveWalletAction);
   }
@@ -126,6 +197,7 @@ export const GenerateMPCKeys: React.FC = () => {
         <Table>
           <Row data={['Algorithm', 'Status']} />
           <Row data={['ECDSA SECP256K1', secP256K1Status ?? 'N/A']} />
+          <Row data={['EDDSA_ED25519', ed25519Status ?? 'N/A']} />
         </Table>
       </View>
       {secP256K1Status && (
@@ -134,6 +206,11 @@ export const GenerateMPCKeys: React.FC = () => {
             progress={statusToProgress(secP256K1Status) / 100}
             width={null}
           />
+        </View>
+      )}
+      {ed25519Status && (
+        <View>
+          <Bar progress={statusToProgress(ed25519Status) / 100} width={null} />
         </View>
       )}
       {generateMPCKeysResult && (
