@@ -134,11 +134,11 @@ function registerEvents({ messagesHandler, secureStorageProvider, eventsHandler,
             console.error("outgoingMessage error", e);
 
             if (e instanceof Error) {
-                await ReactNativeNcwSdk.handleResponse({ opId, deviceId, data: { error: e.message } });
+                await ReactNativeNcwSdk.handleResponse({ opId, deviceId,  error: e.message });
             } else if (e instanceof String || typeof e === 'string') {
-                await ReactNativeNcwSdk.handleResponse({ opId, deviceId, data: { error: e } });
+                await ReactNativeNcwSdk.handleResponse({ opId, deviceId, error: e });
             } else {
-                await ReactNativeNcwSdk.handleResponse({ opId, deviceId, data: { error: "unkown error" } });
+                await ReactNativeNcwSdk.handleResponse({ opId, deviceId,  error: "unkown error" });
             }
         }
     }));
