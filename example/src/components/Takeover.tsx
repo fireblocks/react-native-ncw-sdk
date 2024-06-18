@@ -1,16 +1,18 @@
-import React from "react";
-import { useAppStore } from "../AppStore";
-import type { IActionButtonProps } from "./ui/ActionButton";
-import { Card } from "./ui/Card";
-import { ErrorToast } from "./ui/ErrorToast";
-import { DeriveAssetsList } from "./DeriveAssetsList";
-import { View } from "react-native";
-import type { IFullKey } from "@fireblocks/react-native-ncw-sdk";
+import React from 'react';
+import { useAppStore } from '../AppStore';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Card } from './ui/Card';
+import { ErrorToast } from './ui/ErrorToast';
+import { DeriveAssetsList } from './DeriveAssetsList';
+import { View } from 'react-native';
+import type { IFullKey } from '@fireblocks/react-native-ncw-sdk';
 
 export const Takeover: React.FC = () => {
   const { takeover } = useAppStore();
   const [isTakeoverInProgress, setIsTakeoverInProgress] = React.useState(false);
-  const [exportedFullKeys, setExportedFullKeys] = React.useState<IFullKey[] | null>(null);
+  const [exportedFullKeys, setExportedFullKeys] = React.useState<
+    IFullKey[] | null
+  >(null);
   const [errorStr, setErrorStr] = React.useState<string | null>(null);
 
   const onTakeoverClicked = async () => {
@@ -23,7 +25,7 @@ export const Takeover: React.FC = () => {
       if (err instanceof Error) {
         setErrorStr(err.message);
       } else {
-        setErrorStr("Unknown error");
+        setErrorStr('Unknown error');
       }
     } finally {
       setIsTakeoverInProgress(false);
@@ -36,14 +38,14 @@ export const Takeover: React.FC = () => {
 
   const takeoverAction: IActionButtonProps = {
     action: onTakeoverClicked,
-    label: "Takeover",
+    label: 'Takeover',
     isDisabled: isTakeoverInProgress,
     isInProgress: isTakeoverInProgress,
   };
 
   const clearDataAction: IActionButtonProps = {
     action: onClearDataClicked,
-    label: "Clear",
+    label: 'Clear',
     isDisabled: isTakeoverInProgress || !exportedFullKeys,
   };
 
@@ -52,7 +54,12 @@ export const Takeover: React.FC = () => {
       {exportedFullKeys && (
         <View>
           {exportedFullKeys.map((key) => {
-            return <DeriveAssetsList key={`derived_${key.keyId}`} privateKey={key.privateKey} />;
+            return (
+              <DeriveAssetsList
+                key={`derived_${key.keyId}`}
+                privateKey={key.privateKey}
+              />
+            );
           })}
         </View>
       )}

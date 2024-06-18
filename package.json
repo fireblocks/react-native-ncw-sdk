@@ -161,5 +161,8 @@
     "name": "RNReactNativeNcwSdkSpec",
     "type": "modules",
     "jsSrcsDir": "src"
+  },
+  "dependencies": {
+    "semver": "^7.6.2"
   }
 }

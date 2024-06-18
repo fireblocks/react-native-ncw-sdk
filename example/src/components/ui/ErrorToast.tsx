@@ -1,5 +1,5 @@
-import React from "react";
-import { Text, View } from "react-native";
+import React from 'react';
+import { Text, View } from 'react-native';
 
 interface IProps {
   errorStr: string | null;
@@ -7,7 +7,9 @@ interface IProps {
 
 export const ErrorToast: React.FC<IProps> = ({ errorStr }) => {
   const isMountedRef = React.useRef<boolean>(false);
-  const [internalErrorStr, setInternalErrorStr] = React.useState<string | null>(errorStr);
+  const [internalErrorStr, setInternalErrorStr] = React.useState<string | null>(
+    errorStr
+  );
 
   React.useEffect(() => {
     isMountedRef.current = true;
@@ -33,6 +35,7 @@ export const ErrorToast: React.FC<IProps> = ({ errorStr }) => {
         clearTimeout(timerId);
       };
     }
+    return;
   }, [errorStr]);
 
   if (internalErrorStr === null) {
@@ -41,9 +44,9 @@ export const ErrorToast: React.FC<IProps> = ({ errorStr }) => {
 
   return (
     // <div className="toast toast-container">
-      <View /*className="alert alert-error"*/>
-        <Text>{internalErrorStr}</Text>
-      </View>
+    <View /*className="alert alert-error"*/>
+      <Text>{internalErrorStr}</Text>
+    </View>
     // </div>
   );
 };

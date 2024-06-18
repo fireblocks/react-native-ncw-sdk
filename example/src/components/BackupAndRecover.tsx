@@ -1,16 +1,18 @@
-import React, { useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-shadow */
+/* eslint-disable no-catch-shadow */
+import React, { useEffect } from 'react';
 
-import { useAppStore } from "../AppStore";
-import { IActionButtonProps } from "./ui/ActionButton";
-import { Card, ICardAction } from "./ui/Card";
-import { randomPassPhrase } from "../services/randomPassPhrase";
-import { TPassphraseLocation } from "../services/ApiService";
-import { gdriveBackup, gdriveRecover } from "../services/GoogleDrive";
+import { useAppStore } from '../AppStore';
+// import type { IActionButtonProps } from './ui/ActionButton';
+import { Card, type ICardAction } from './ui/Card';
+import { randomPassPhrase } from '../services/randomPassPhrase';
+import type { TPassphraseLocation } from '../services/ApiService';
+import { gdriveBackup, gdriveRecover } from '../services/GoogleDrive';
 // import { cloudkitBackup, cloudkitRecover } from "../services/Cloudkit";
 // import { useCloudkit } from "./Cloudkit";
-import uuid from "react-native-uuid";
-import { Text, View } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import uuid from 'react-native-uuid';
+import { Text, View } from 'react-native';
+// import Svg, { Path } from 'react-native-svg';
 
 export const BackupAndRecover: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);
@@ -38,25 +40,30 @@ export const BackupAndRecover: React.FC = () => {
     if (!passphrases) {
       getPassphraseInfos();
     }
-  }, [passphrases]);
+  }, [getPassphraseInfos, passphrases]);
 
   useEffect(() => {
     if (!latestBackup) {
       getLatestBackup();
     }
-  }, [latestBackup, walletId]);
+  }, [getLatestBackup, latestBackup, walletId]);
 
   const recoverGoogleDrive = async (passphraseId: string) => {
     const token = await getGoogleDriveCredentials();
     return gdriveRecover(token, passphraseId);
   };
 
-  const backupGoogleDrive = async (passphrase: string, passphraseId: string) => {
+  const backupGoogleDrive = async (
+    passphrase: string,
+    passphraseId: string
+  ) => {
     const token = await getGoogleDriveCredentials();
     return gdriveBackup(token, passphrase, passphraseId);
   };
 
-  const recoverPassphraseId: (passphraseId: string) => Promise<string> = async (passphraseId) => {
+  const recoverPassphraseId: (passphraseId: string) => Promise<string> = async (
+    passphraseId
+  ) => {
     await getPassphraseInfos();
 
     if (passphrases === null) {
@@ -67,16 +74,16 @@ export const BackupAndRecover: React.FC = () => {
     for (const info of Object.values(passphrases)) {
       if (info.passphraseId === passphraseId) {
         switch (info.location) {
-          case "GoogleDrive": {
+          case 'GoogleDrive': {
             return await recoverGoogleDrive(info.passphraseId);
           }
-          case "iCloud": {
+          case 'iCloud': {
             // if (!cloudkit || !appleSignedIn) {
             //   throw new Error("Sign in with Apple ID required");
             // }
 
             // return await cloudkitRecover(cloudkit, info.passphraseId);
-            throw new Error("Cloudkit not supported")
+            throw new Error('Cloudkit not supported');
           }
           default:
             throw new Error(`Unsupported backup location ${info.location}`);
@@ -88,8 +95,10 @@ export const BackupAndRecover: React.FC = () => {
   };
 
   const passphraseRecover: (
-    location: TPassphraseLocation,
-  ) => Promise<{ passphrase: string; passphraseId: string }> = async (location) => {
+    location: TPassphraseLocation
+  ) => Promise<{ passphrase: string; passphraseId: string }> = async (
+    location
+  ) => {
     if (passphrases === null) {
       throw new Error();
     }
@@ -98,18 +107,18 @@ export const BackupAndRecover: React.FC = () => {
     for (const info of Object.values(passphrases)) {
       if (info.location === location) {
         switch (location) {
-          case "GoogleDrive": {
+          case 'GoogleDrive': {
             const passphrase = await recoverGoogleDrive(info.passphraseId);
             return { passphraseId: info.passphraseId, passphrase };
           }
-          case "iCloud": {
+          case 'iCloud': {
             // if (!cloudkit || !appleSignedIn) {
             //   throw new Error("Sign in with Apple ID required");
             // }
 
             // const passphrase = await cloudkitRecover(cloudkit, info.passphraseId);
             // return { passphraseId: info.passphraseId, passphrase };
-            throw new Error("Cloudkit not supported")
+            throw new Error('Cloudkit not supported');
           }
           default:
             throw new Error(`Unsupported backup location ${location}`);
@@ -121,8 +130,10 @@ export const BackupAndRecover: React.FC = () => {
   };
 
   const passphrasePersist: (
-    location: TPassphraseLocation,
-  ) => Promise<{ passphrase: string; passphraseId: string }> = async (location) => {
+    location: TPassphraseLocation
+  ) => Promise<{ passphrase: string; passphraseId: string }> = async (
+    location
+  ) => {
     if (passphrases === null) {
       throw new Error();
     }
@@ -130,11 +141,15 @@ export const BackupAndRecover: React.FC = () => {
     try {
       const recover = await passphraseRecover(location);
       if (recover && recover.passphrase && recover.passphraseId) {
-        console.debug("recovered passphrase", location, recover.passphraseId);
+        console.debug('recovered passphrase', location, recover.passphraseId);
         return recover;
       }
     } catch (e) {
-      console.warn(`failed to load previous passphrase, creating new`, e, location);
+      console.warn(
+        `failed to load previous passphrase, creating new`,
+        e,
+        location
+      );
     }
 
     // creating new
@@ -142,26 +157,31 @@ export const BackupAndRecover: React.FC = () => {
     const passphraseId = uuid.v4() as string;
 
     switch (location) {
-      case "GoogleDrive": {
+      case 'GoogleDrive': {
         await backupGoogleDrive(passphrase, passphraseId);
         await createPassphraseInfo(passphraseId, location);
         return { passphraseId, passphrase };
       }
-      case "iCloud": {
+      case 'iCloud': {
         // if (!cloudkit || !appleSignedIn) {
         //   throw new Error("Apple Sign in required");
         // }
         // await cloudkitBackup(cloudkit, passphrase, passphraseId);
         // await createPassphraseInfo(passphraseId, location);
         // return { passphraseId, passphrase };
-        throw new Error("Cloudkit not supported")
+        throw new Error('Cloudkit not supported');
       }
       default:
         throw new Error(`Unsupported backup location ${location}`);
     }
   };
 
-  const doBackupKeys = async (passphrasePersist: () => Promise<{ passphrase: string; passphraseId: string }>) => {
+  const doBackupKeys = async (
+    passphrasePersist: () => Promise<{
+      passphrase: string;
+      passphraseId: string;
+    }>
+  ) => {
     setErr(null);
     setIsBackupInProgress(true);
     setBackupCompleted(false);
@@ -176,7 +196,7 @@ export const BackupAndRecover: React.FC = () => {
         console.error(err, err.stack);
         setErr(err.message);
       } else {
-        setErr("Unknown Error");
+        setErr('Unknown Error');
       }
     } finally {
       setIsBackupInProgress(false);
@@ -184,7 +204,9 @@ export const BackupAndRecover: React.FC = () => {
     await getLatestBackup();
   };
 
-  const doRecoverKeys = async (passphraseResolver: (passphraseId: string) => Promise<string>) => {
+  const doRecoverKeys = async (
+    passphraseResolver: (passphraseId: string) => Promise<string>
+  ) => {
     setErr(null);
     setIsRecoverInProgress(true);
     setRecoverCompleted(false);
@@ -197,7 +219,7 @@ export const BackupAndRecover: React.FC = () => {
       if (err instanceof Error) {
         setErr(err.message);
       } else {
-        setErr("Unknown Error");
+        setErr('Unknown Error');
       }
     } finally {
       setIsRecoverInProgress(false);
@@ -206,24 +228,29 @@ export const BackupAndRecover: React.FC = () => {
 
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
   const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
-  const hasReadyAlgo = secP256K1Status === "READY" || ed25519Status === "READY";
+  const hasReadyAlgo = secP256K1Status === 'READY' || ed25519Status === 'READY';
 
   const googleBackupAction: ICardAction = {
-    label: "Google Drive Backup",
-    action: () => doBackupKeys(() => passphrasePersist("GoogleDrive")),
-    isDisabled: isRecoverInProgress || isBackupInProgress || hasReadyAlgo === false,
+    label: 'Google Drive Backup',
+    action: () => doBackupKeys(() => passphrasePersist('GoogleDrive')),
+    isDisabled:
+      isRecoverInProgress || isBackupInProgress || hasReadyAlgo === false,
     isInProgress: isBackupInProgress,
   };
 
   const appleBackupAction: ICardAction = {
-    label: "iCloud Backup",
-    action: () => doBackupKeys(() => passphrasePersist("iCloud")),
-    isDisabled: !appleSignedIn || isRecoverInProgress || isBackupInProgress || hasReadyAlgo === false,
+    label: 'iCloud Backup',
+    action: () => doBackupKeys(() => passphrasePersist('iCloud')),
+    isDisabled:
+      !appleSignedIn ||
+      isRecoverInProgress ||
+      isBackupInProgress ||
+      hasReadyAlgo === false,
     isInProgress: isBackupInProgress,
   };
 
   const recoverAction: ICardAction = {
-    label: "Recover",
+    label: 'Recover',
     action: () => doRecoverKeys(recoverPassphraseId),
     isDisabled: !latestBackup || isRecoverInProgress || isBackupInProgress,
     isInProgress: isRecoverInProgress,
@@ -233,7 +260,10 @@ export const BackupAndRecover: React.FC = () => {
     return;
   }
   return (
-    <Card title="Backup/Recover" actions={[googleBackupAction, appleBackupAction, recoverAction]}>
+    <Card
+      title="Backup/Recover"
+      actions={[googleBackupAction, appleBackupAction, recoverAction]}
+    >
       {/* <div id="sign-in-button"></div>
       <div id="sign-out-button"></div> */}
       {latestBackup && (
@@ -245,9 +275,7 @@ export const BackupAndRecover: React.FC = () => {
       )}
       {backupCompleted && (
         <View /*className="mockup-code"*/>
-          <Text>
-            Backup completed successfuly!
-          </Text>
+          <Text>Backup completed successfuly!</Text>
         </View>
       )}
       {recoverCompleted && (

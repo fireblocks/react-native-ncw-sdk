@@ -1,12 +1,13 @@
-import React from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import React from 'react';
 
-import { useAppStore } from "../AppStore";
-import { IActionButtonProps } from "./ui/ActionButton";
-import { AreYouSureDialog } from "./ui/AreYouSureDialog";
-import { Card } from "./ui/Card";
-import { ENV_CONFIG } from "../env_config";
-import { Text, View } from "react-native";
-import Svg from "react-native-svg";
+import { useAppStore } from '../AppStore';
+import type { IActionButtonProps } from './ui/ActionButton';
+// import { AreYouSureDialog } from './ui/AreYouSureDialog';
+import { Card } from './ui/Card';
+import { ENV_CONFIG } from '../env_config';
+import { Text, View } from 'react-native';
+// import Svg from 'react-native-svg';
 
 export const FireblocksNCWInitializer: React.FC = () => {
   const {
@@ -15,78 +16,79 @@ export const FireblocksNCWInitializer: React.FC = () => {
     initFireblocksNCW,
     fireblocksNCWSdkVersion,
     disposeFireblocksNCW,
-    clearSDKStorage,
+    // clearSDKStorage,
   } = useAppStore();
-  const [isAreYouSureDialogOpen, setIsAreYouSureDialogOpen] = React.useState(false);
+  const [_isAreYouSureDialogOpen, setIsAreYouSureDialogOpen] =
+    React.useState(false);
 
   const onClearSDKStorageClicked = () => {
     setIsAreYouSureDialogOpen(true);
   };
 
-  const closeAreYouSureDialog = () => {
-    setIsAreYouSureDialogOpen(false);
-  };
+  // const closeAreYouSureDialog = () => {
+  //   setIsAreYouSureDialogOpen(false);
+  // };
 
-  const onClearSDKStorageApproved = async () => {
-    setIsAreYouSureDialogOpen(false);
-    localStorage.clear();
-    await clearSDKStorage();
-    await initFireblocksNCW();
-    location.reload();
-  };
+  // const onClearSDKStorageApproved = async () => {
+  //   setIsAreYouSureDialogOpen(false);
+  //   // localStorage.clear();
+  //   await clearSDKStorage();
+  //   await initFireblocksNCW();
+  //   // location.reload();
+  // };
 
   // An easy way to auto-initialize
   React.useEffect(() => {
     if (automateInitialization) {
       initFireblocksNCW();
     }
-  }, [automateInitialization]);
+  }, [automateInitialization, initFireblocksNCW]);
 
   // Force dispose on unmount
   React.useEffect(
     () => () => {
       disposeFireblocksNCW();
     },
-    [],
+    [disposeFireblocksNCW]
   );
 
   let sdkActions: IActionButtonProps[];
 
   switch (fireblocksNCWStatus) {
-    case "sdk_not_ready":
-    case "sdk_initialization_failed":
+    case 'sdk_not_ready':
+    case 'sdk_initialization_failed':
       sdkActions = [
         {
           action: () => initFireblocksNCW(),
           isDisabled: false,
-          label: "Initialize",
+          label: 'Initialize',
         },
       ];
       break;
 
-    case "initializing_sdk":
+    case 'initializing_sdk':
       sdkActions = [
         {
           isDisabled: true,
           isInProgress: true,
-          label: "Creating Fireblocks SDK Instance",
+          label: 'Creating Fireblocks SDK Instance',
         },
       ];
       break;
 
-    case "sdk_available":
+    case 'sdk_available':
       sdkActions = [
         {
           isDisabled: false,
-          label: "Dispose",
+          label: 'Dispose',
           action: disposeFireblocksNCW,
-          buttonVariant: "accent",
+          buttonVariant: 'accent',
         },
         {
           isDisabled: false,
-          label: "Clear Storage",
+          label: 'Clear Storage',
           action: onClearSDKStorageClicked,
-          buttonVariant: "accent",
+          buttonVariant: 'accent',
         },
       ];
       break;
@@ -98,7 +100,12 @@ export const FireblocksNCWInitializer: React.FC = () => {
         title={`Fireblocks SDK (${ENV_CONFIG.NCW_SDK_ENV}) - Version ${fireblocksNCWSdkVersion}`}
         actions={sdkActions}
       >
-        <View><Text>{fireblocksNCWStatus === "sdk_initialization_failed" && "Initialization Failed"}</Text></View>
+        <View>
+          <Text>
+            {fireblocksNCWStatus === 'sdk_initialization_failed' &&
+              'Initialization Failed'}
+          </Text>
+        </View>
       </Card>
       {/* <AreYouSureDialog
         title="Are you sure?"

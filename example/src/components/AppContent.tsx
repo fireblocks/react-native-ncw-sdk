@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import { useAppStore } from "../AppStore";
-import { AssignDevice } from "./AssignDevice";
-import { FireblocksNCWInitializer } from "./FireblocksNCWInitializer";
-import { LoginToDemoAppServer } from "./LoginToDemoAppServer";
-import { FireblocksNCWExampleActions } from "./FireblocksNCWExampleActions";
-import { ModeSelector } from "./ModeSelector";
+import { useAppStore } from '../AppStore';
+import { AssignDevice } from './AssignDevice';
+import { FireblocksNCWInitializer } from './FireblocksNCWInitializer';
+import { LoginToDemoAppServer } from './LoginToDemoAppServer';
+import { FireblocksNCWExampleActions } from './FireblocksNCWExampleActions';
+import { ModeSelector } from './ModeSelector';
 
 export const AppContent: React.FC = () => {
   const {
@@ -26,7 +26,8 @@ export const AppContent: React.FC = () => {
     } else {
       initAppStore();
     }
-  }, [disposeAppStore, appStoreInitialized]);
+    return;
+  }, [disposeAppStore, appStoreInitialized, initAppStore]);
 
   if (!appStoreInitialized) {
     return null;
@@ -35,16 +36,18 @@ export const AppContent: React.FC = () => {
   return (
     <>
       <LoginToDemoAppServer />
-      {loginToDemoAppServerStatus === "success" && (
+      {loginToDemoAppServerStatus === 'success' && (
         <>
           <ModeSelector />
           {appMode && (
             <>
               <AssignDevice />
-              {assignDeviceStatus === "success" && (
+              {assignDeviceStatus === 'success' && (
                 <>
                   <FireblocksNCWInitializer />
-                  {fireblocksNCWStatus === "sdk_available" && <FireblocksNCWExampleActions />}
+                  {fireblocksNCWStatus === 'sdk_available' && (
+                    <FireblocksNCWExampleActions />
+                  )}
                 </>
               )}
             </>

@@ -106,14 +106,26 @@ android {
 }
 
 repositories {
-  maven {
-    url = "https://maven.fireblocks.io/android-sdk/maven"
-    name = "android-sdk"
-    credentials(HttpHeaderCredentials) {
-      name = "Deploy-Token"
-      value = "-fU8ijmuPohHaqDBgpaT"
-    }
-    authentication { header(HttpHeaderAuthentication) }
+//Sandbox:
+  //  maven {
+  //      url = "https://maven.fireblocks.io/android-sdk/maven"
+  //     name = "android-sdk"
+  //     credentials(HttpHeaderCredentials) {
+  //       name = "Deploy-Token"
+  //       value = "-fU8ijmuPohHaqDBgpaT"
+  //     }
+  //     authentication {  header(HttpHeaderAuthentication) }
+  // }
+
+  //dev9:
+     maven {
+       url = "https://gitlab.com/api/v4/projects/42877710/packages/maven"
+      name = "android-sdk"
+      credentials(HttpHeaderCredentials) {
+        name = "Deploy-Token"
+        value = "vq2yuSp4Vxu5tzyExoXt"
+      }
+      authentication {  header(HttpHeaderAuthentication) }
   }
 }
 
@@ -121,7 +133,9 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-    implementation("com.fireblocks.sdk:ncw:2.5.0")
+    // implementation("com.fireblocks.sdk:ncw:2.5.0") //sandbox
+      implementation("com.fireblocks.sdk:ncw-dev:2.5.0") //dev9
+
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")

@@ -5,7 +5,7 @@ export interface IUser {
 
 export interface IAuthManager {
   getGoogleDriveCredentials(): Promise<string>;
-  login(provider: "GOOGLE" | "APPLE"): Promise<void>;
+  login(provider: 'GOOGLE' | 'APPLE'): Promise<void>;
   logout(): Promise<void>;
   getAccessToken(): Promise<string>;
   onUserChanged(callback: (user: IUser | null) => void): () => void;

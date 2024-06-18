@@ -1,22 +1,33 @@
-import React from "react";
+import React from 'react';
 
-import { useAppStore } from "../AppStore";
-import type { IActionButtonProps } from "./ui/ActionButton";
-import { Card } from "./ui/Card";
-import { ENV_CONFIG } from "../env_config";
+import { useAppStore } from '../AppStore';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Card } from './ui/Card';
+import { ENV_CONFIG } from '../env_config';
 import { Table, Row } from 'react-native-reanimated-table';
-import { Text, View } from "react-native";
+import { Text, View } from 'react-native';
 import { Bar } from 'react-native-progress';
-import { QRScanner } from "./QRScanner";
+import { QRScanner } from './QRScanner';
 
-import type { TKeyStatus } from "@fireblocks/react-native-ncw-sdk";
+import type {
+  TKeyStatus,
+  TMPCAlgorithm,
+} from '@fireblocks/react-native-ncw-sdk';
 
 export const GenerateMPCKeys: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);
   const [isGenerateInProgress, setIsGenerateInProgress] = React.useState(false);
   const [isStopInProgress, setIsStopInProgress] = React.useState(false);
-  const [generateMPCKeysResult, setGenerateMPCKeysResult] = React.useState<string | null>(null);
-  const { keysStatus, generateMPCKeys, stopMpcDeviceSetup, approveJoinWallet, stopJoinExistingWallet } = useAppStore();
+  const [generateMPCKeysResult, setGenerateMPCKeysResult] = React.useState<
+    string | null
+  >(null);
+  const {
+    keysStatus,
+    generateMPCKeys,
+    stopMpcDeviceSetup,
+    approveJoinWallet,
+    stopJoinExistingWallet,
+  } = useAppStore();
   const [showScanQr, setShowScanQr] = React.useState(false);
 
   const doGenerateMPCKeys = async () => {
@@ -24,17 +35,69 @@ export const GenerateMPCKeys: React.FC = () => {
     setErr(null);
     setIsGenerateInProgress(true);
     try {
-      await generateMPCKeys();
-      setGenerateMPCKeysResult("Success");
+      const ALGORITHMS = new Set<TMPCAlgorithm>([
+        'MPC_ECDSA_SECP256K1',
+        'MPC_EDDSA_ED25519',
+      ]);
+      await generateMPCKeys(ALGORITHMS);
+      setGenerateMPCKeysResult('Success');
       setIsGenerateInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
       } else {
-        if (typeof err === "string") {
-          setErr(err);
+        if (typeof e === 'string') {
+          setErr(e);
         } else {
-          setErr("Unknown Error");
+          setErr('Unknown Error');
+        }
+      }
+    } finally {
+      setIsGenerateInProgress(false);
+    }
+  };
+
+  const doGenerateMPCKeyECDSA = async () => {
+    setGenerateMPCKeysResult(null);
+    setErr(null);
+    setIsGenerateInProgress(true);
+    try {
+      const ALGORITHMS = new Set<TMPCAlgorithm>(['MPC_ECDSA_SECP256K1']);
+      await generateMPCKeys(ALGORITHMS);
+      setGenerateMPCKeysResult('Success');
+      setIsGenerateInProgress(false);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
+      } else {
+        if (typeof e === 'string') {
+          setErr(e);
+        } else {
+          setErr('Unknown Error');
+        }
+      }
+    } finally {
+      setIsGenerateInProgress(false);
+    }
+  };
+
+  const doGenerateMPCKeyEdDSA = async () => {
+    setGenerateMPCKeysResult(null);
+    setErr(null);
+    setIsGenerateInProgress(true);
+    try {
+      const ALGORITHMS = new Set<TMPCAlgorithm>(['MPC_EDDSA_ED25519']);
+      await generateMPCKeys(ALGORITHMS);
+      setGenerateMPCKeysResult('Success');
+      setIsGenerateInProgress(false);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
+      } else {
+        if (typeof e === 'string') {
+          setErr(e);
+        } else {
+          setErr('Unknown Error');
         }
       }
     } finally {
@@ -48,11 +111,11 @@ export const GenerateMPCKeys: React.FC = () => {
     try {
       await stopMpcDeviceSetup();
       setIsStopInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        setErr(e.message);
       } else {
-        setErr("Unknown Error");
+        setErr('Unknown Error');
       }
     } finally {
       setIsStopInProgress(false);
@@ -60,49 +123,70 @@ export const GenerateMPCKeys: React.FC = () => {
   };
 
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
+  const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
+
   const statusToProgress = (status: TKeyStatus | null) => {
     switch (status) {
-      case "INITIATED":
+      case 'INITIATED':
         return 7;
-      case "REQUESTED_SETUP":
+      case 'REQUESTED_SETUP':
         return 32;
-      case "SETUP":
+      case 'SETUP':
         return 53;
-      case "SETUP_COMPLETE":
+      case 'SETUP_COMPLETE':
         return 72;
-      case "READY":
+      case 'READY':
         return 100;
       default:
         return 0;
     }
   };
-  const secP256K1Ready = secP256K1Status === "READY";
+  const secP256K1Ready = secP256K1Status === 'READY';
+  const ed25519Ready = ed25519Status === 'READY';
 
   const generateAction: IActionButtonProps = {
-    label: "Generate MPC Keys",
+    label: 'Generate MPC Keys',
     action: doGenerateMPCKeys,
-    isDisabled: isGenerateInProgress || secP256K1Ready,
+    isDisabled: isGenerateInProgress || (secP256K1Ready && ed25519Ready),
     isInProgress: isGenerateInProgress,
   };
-
+  const generateActionECDSA: IActionButtonProps = {
+    label: 'Generate MPC ECDSA Key',
+    action: doGenerateMPCKeyECDSA,
+    isDisabled: secP256K1Ready,
+    isInProgress: isGenerateInProgress,
+  };
+  const generateActionEdDSA: IActionButtonProps = {
+    label: 'Generate MPC EdDsa Key',
+    action: doGenerateMPCKeyEdDSA,
+    isDisabled: ed25519Ready,
+    isInProgress: isGenerateInProgress,
+  };
   const stopAction: IActionButtonProps = {
-    label: "Stop MPC Device Setup",
+    label: 'Stop MPC Device Setup',
     action: doStopMPCDeviceSetup,
     isDisabled: isStopInProgress || !isGenerateInProgress,
     isInProgress: isStopInProgress,
   };
-
   const approveJoinWalletAction: IActionButtonProps = {
-    label: "Approve Join Wallet",
+    label: 'Approve Join Wallet',
     action: () => setShowScanQr(true),
-    isDisabled: (isStopInProgress || isGenerateInProgress) && secP256K1Ready,
+    isDisabled:
+      (isStopInProgress || isGenerateInProgress) &&
+      (ed25519Ready || secP256K1Ready),
   };
   const stopApproveWalletAction: IActionButtonProps = {
-    label: "Stop Approve Join Wallet",
+    label: 'Stop Approve Join Wallet',
     action: stopJoinExistingWallet,
   };
 
-  const actions = [generateAction, stopAction, approveJoinWalletAction];
+  const actions = [
+    generateAction,
+    generateActionECDSA,
+    generateActionEdDSA,
+    stopAction,
+    approveJoinWalletAction,
+  ];
   if (ENV_CONFIG.DEV_MODE) {
     actions.push(stopApproveWalletAction);
   }
@@ -111,38 +195,46 @@ export const GenerateMPCKeys: React.FC = () => {
     <Card title="Generate MPC Keys" actions={actions}>
       <View>
         <Table>
-          <Row data={[
-              "Algorithm",
-              "Status",
-           ]}/>
-          <Row data={[
-            "ECDSA SECP256K1",
-            secP256K1Status ?? "N/A",
-           ]}/>
+          <Row data={['Algorithm', 'Status']} />
+          <Row data={['ECDSA SECP256K1', secP256K1Status ?? 'N/A']} />
+          <Row data={['EDDSA_ED25519', ed25519Status ?? 'N/A']} />
         </Table>
       </View>
-      { secP256K1Status && (
+      {secP256K1Status && (
         <View>
-          <Bar progress={statusToProgress(secP256K1Status)/100} width={null} />
+          <Bar
+            progress={statusToProgress(secP256K1Status) / 100}
+            width={null}
+          />
         </View>
       )}
-      { generateMPCKeysResult && (
+      {ed25519Status && (
+        <View>
+          <Bar progress={statusToProgress(ed25519Status) / 100} width={null} />
+        </View>
+      )}
+      {generateMPCKeysResult && (
         <View>
           <Text>Result: {generateMPCKeysResult}</Text>
         </View>
       )}
-      { showScanQr && <QRScanner onClose={() => setShowScanQr(false)} onScanned={async (code) => {
-         try {
-           await approveJoinWallet(code)
-           setShowScanQr(false)
-         } catch (err: unknown) {
-           if (err instanceof Error) {
-             setErr(err.message)
-           } else {
-             setErr("Unknown Error")
-           }
-         }
-      }}/>}
+      {showScanQr && (
+        <QRScanner
+          onClose={() => setShowScanQr(false)}
+          onScanned={async (code) => {
+            try {
+              await approveJoinWallet(code);
+              setShowScanQr(false);
+            } catch (e: unknown) {
+              if (e instanceof Error) {
+                setErr(e.message);
+              } else {
+                setErr('Unknown Error');
+              }
+            }
+          }}
+        />
+      )}
       {err && (
         <View /*className="alert alert-error shadow-lg"*/>
           <View>

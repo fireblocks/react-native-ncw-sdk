@@ -1,6 +1,6 @@
-import React from "react";
-import { useAppStore } from "../AppStore";
-import { IWeb3Session } from "../services/ApiService";
+import React from 'react';
+import { useAppStore } from '../AppStore';
+import type { IWeb3Session } from '../services/ApiService';
 
 interface IProps {
   session: IWeb3Session;
@@ -41,7 +41,11 @@ export const Web3ConnectionRow: React.FC<IProps> = ({ session }) => {
       <td>{appUrl}</td>
       <td>{appIcon && <img src={appIcon} />}</td>
       <td>
-        <button className="btn btn-sm btn-secondary" disabled={inProgress} onClick={removeClicked}>
+        <button
+          className="btn btn-sm btn-secondary"
+          disabled={inProgress}
+          onClick={removeClicked}
+        >
           Remove
         </button>
       </td>

@@ -100,12 +100,24 @@ repositories {
   mavenCentral()
   google()
 
-   maven {
-       url = "https://maven.fireblocks.io/android-sdk/maven"
+  //Sandbox:
+  //  maven {
+  //      url = "https://maven.fireblocks.io/android-sdk/maven"
+  //     name = "android-sdk"
+  //     credentials(HttpHeaderCredentials) {
+  //       name = "Deploy-Token"
+  //       value = "-fU8ijmuPohHaqDBgpaT"
+  //     }
+  //     authentication {  header(HttpHeaderAuthentication) }
+  // }
+
+  //dev9:
+     maven {
+       url = "https://gitlab.com/api/v4/projects/42877710/packages/maven"
       name = "android-sdk"
       credentials(HttpHeaderCredentials) {
         name = "Deploy-Token"
-        value = "-fU8ijmuPohHaqDBgpaT"
+        value = "vq2yuSp4Vxu5tzyExoXt"
       }
       authentication {  header(HttpHeaderAuthentication) }
   }
@@ -119,7 +131,9 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation "com.fireblocks.sdk:ncw:2.5.0"
+  implementation "com.fireblocks.sdk:ncw-dev:2.5.0" //dev9
+  //implementation "com.fireblocks.sdk:ncw:2.5.0" //sandbox
+
 }
 
 if (isNewArchitectureEnabled()) {

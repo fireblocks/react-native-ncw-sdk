@@ -7,9 +7,13 @@ folly_compiler_flags = '-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 
 def $RNNCWSDK.post_install(installer)
   # add SPM dependency
   project = installer.pods_project
-  url =  "https://github.com/fireblocks/ncw-ios-sdk.git"
-  product_name = "FireblocksSDK"
-  requirement = { :kind => "upToNextMajorVersion", :minimumVersion => "2.3.6" }
+  # dev 9
+  url =  "git@github.com:fireblocks/ncw-ios-sdk-dev.git"
+  product_name = "FireblocksDev"
+  # sandbox
+  #   url =  "https://github.com/fireblocks/ncw-ios-sdk.git"
+  # product_name = "FireblocksSDK"
+  requirement = { :kind => "upToNextMajorVersion", :minimumVersion => "2.5.1" }
 
   pkg_class = Xcodeproj::Project::Object::XCRemoteSwiftPackageReference
   ref_class = Xcodeproj::Project::Object::XCSwiftPackageProductDependency

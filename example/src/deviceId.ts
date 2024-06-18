@@ -1,7 +1,7 @@
-import { MMKV } from "react-native-mmkv";
+import { MMKV } from 'react-native-mmkv';
 import uuid from 'react-native-uuid';
 
-const DEVICE_ID_KEY = "DEMO_APP:deviceId";
+const DEVICE_ID_KEY = 'DEMO_APP:deviceId';
 
 const mmkv = new MMKV();
 
