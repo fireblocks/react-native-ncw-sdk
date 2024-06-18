@@ -12,8 +12,8 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2923859A2BD18D1D00BDE940 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 292385992BD18D1D00BDE940 /* GoogleService-Info.plist */; };
-		292385A62BD19B6100BDE940 /* FireblocksSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 292385A52BD19B6100BDE940 /* FireblocksSDK */; };
 		399C8E7E2C10A0B10060CF72 /* ReactNativeNcwSdkExampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 399C8E7D2C10A0B10060CF72 /* ReactNativeNcwSdkExampleTests.swift */; };
+		39BD11092C21603C0035EF26 /* FireblocksDev in Frameworks */ = {isa = PBXBuildFile; productRef = 39BD11082C21603C0035EF26 /* FireblocksDev */; };
 		6168BB22004ADA806847E0C1 /* libPods-ReactNativeNcwSdkExample-ReactNativeNcwSdkExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ReactNativeNcwSdkExample-ReactNativeNcwSdkExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
@@ -55,8 +55,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39BD11092C21603C0035EF26 /* FireblocksDev in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-ReactNativeNcwSdkExample.a in Frameworks */,
-				292385A62BD19B6100BDE940 /* FireblocksSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,7 +185,7 @@
 			);
 			name = ReactNativeNcwSdkExample;
 			packageProductDependencies = (
-				292385A52BD19B6100BDE940 /* FireblocksSDK */,
+				39BD11082C21603C0035EF26 /* FireblocksDev */,
 			);
 			productName = ReactNativeNcwSdkExample;
 			productReference = 13B07F961A680F5B00A75B9A /* ReactNativeNcwSdkExample.app */;
@@ -240,7 +240,7 @@
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
 			packageReferences = (
-				292385A42BD19B6100BDE940 /* XCRemoteSwiftPackageReference "ncw-ios-sdk" */,
+				39BD11072C21603C0035EF26 /* XCRemoteSwiftPackageReference "ncw-ios-sdk-dev" */,
 			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
@@ -760,21 +760,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		292385A42BD19B6100BDE940 /* XCRemoteSwiftPackageReference "ncw-ios-sdk" */ = {
+		39BD11072C21603C0035EF26 /* XCRemoteSwiftPackageReference "ncw-ios-sdk-dev" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/fireblocks/ncw-ios-sdk";
+			repositoryURL = "git@github.com:fireblocks/ncw-ios-sdk-dev.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.4.0;
+				minimumVersion = 2.5.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		292385A52BD19B6100BDE940 /* FireblocksSDK */ = {
+		39BD11082C21603C0035EF26 /* FireblocksDev */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 292385A42BD19B6100BDE940 /* XCRemoteSwiftPackageReference "ncw-ios-sdk" */;
-			productName = FireblocksSDK;
+			package = 39BD11072C21603C0035EF26 /* XCRemoteSwiftPackageReference "ncw-ios-sdk-dev" */;
+			productName = FireblocksDev;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -6,7 +6,10 @@
 //
 
 import Foundation
-import FireblocksSDK
+// dev9:
+import FireblocksDev 
+// sandbox:
+// import FireblocksSDK
 import React
 
 struct BridgeError: LocalizedError {
@@ -88,7 +91,11 @@ class DeviceAdapter : KeyStorageDelegate, MessageHandlerDelegate, EventHandlerDe
     }
     
     // EventHandlerDelegate
-    func onEvent(event: FireblocksSDK.FireblocksEvent) {
+
+    //dev9: event: FireblocksDev.FireblocksEvent 
+    //sandbox: event: FireblocksSDK.FireblocksEvent
+
+    func onEvent(event: FireblocksDev.FireblocksEvent) {
         func emitSDKEvent(body: [String: Any]) {
             ReactNativeNcwSdk.emitter.sendEvent(withName: "sdk_event", body: body)
         }
@@ -280,9 +287,10 @@ class ReactNativeNcwSdk : RCTEventEmitter {
             
             print("initializing Fireblocks, deiviceId:", deviceId)
             let adapter = DeviceAdapter(deviceId: deviceId)
-            
-            let opts: FireblocksOptions = FireblocksOptions(env: FireblocksSDK.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
-            
+            // dev9:
+            let opts: FireblocksOptions = FireblocksOptions(env: FireblocksDev.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
+            // sandbox:
+            // let opts: FireblocksOptions = FireblocksOptions(env: FireblocksSDK.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
             try Fireblocks.initialize(deviceId: deviceId, messageHandlerDelegate: adapter, keyStorageDelegate: adapter, fireblocksOptions: opts)
             
             print("initialized Fireblocks successfully, deiviceId:", deviceId)
