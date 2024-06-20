@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable no-catch-shadow */
+
 import React, { useEffect } from 'react';
 
 import { useAppStore } from '../AppStore';
