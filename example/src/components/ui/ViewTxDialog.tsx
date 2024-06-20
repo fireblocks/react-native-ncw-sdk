@@ -25,9 +25,9 @@ export const ViewTxDialog: React.FC<IProps> = ({ isOpen, onClose, txId }) => {
       await signTransaction(txId);
       setInProgress(false);
       onClose();
-    } catch (err: unknown) {
+    } catch (catchErr: unknown) {
       setInProgress(false);
-      if (err instanceof Error) {
+      if (catchErr instanceof Error) {
         // setErrorStr(err.message);
       } else {
         // setErrorStr("Unknown error");

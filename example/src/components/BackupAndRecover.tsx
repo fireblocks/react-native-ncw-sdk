@@ -191,10 +191,10 @@ export const BackupAndRecover: React.FC = () => {
       await backupKeys(passphrase, passphraseId);
       setBackupCompleted(true);
       setIsBackupInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        console.error(err, err.stack);
-        setErr(err.message);
+    } catch (catchErr: unknown) {
+      if (catchErr instanceof Error) {
+        console.error(catchErr, catchErr.stack);
+        setErr(catchErr.message);
       } else {
         setErr('Unknown Error');
       }
@@ -215,9 +215,9 @@ export const BackupAndRecover: React.FC = () => {
       await recoverKeys(passphraseResolver);
       setRecoverCompleted(true);
       setIsRecoverInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (catchErr: unknown) {
+      if (catchErr instanceof Error) {
+        setErr(catchErr.message);
       } else {
         setErr('Unknown Error');
       }

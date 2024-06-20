@@ -38,13 +38,12 @@ export const JoinExistingWallet: React.FC = () => {
       await joinExistingWallet();
       setJoinExistingWalletResult('Success');
       setIsJoinInProgress(false);
-      // eslint-disable-next-line @typescript-eslint/no-shadow
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (catchErr: unknown) {
+      if (catchErr instanceof Error) {
+        setErr(catchErr.message);
       } else {
-        if (typeof err === 'string') {
-          setErr(err);
+        if (typeof catchErr === 'string') {
+          setErr(catchErr);
         } else {
           setErr('Unknown Error');
         }

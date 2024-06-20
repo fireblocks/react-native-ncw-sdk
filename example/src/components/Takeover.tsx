@@ -21,9 +21,9 @@ export const Takeover: React.FC = () => {
       setIsTakeoverInProgress(true);
       const result = await takeover();
       setExportedFullKeys(result);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErrorStr(err.message);
+    } catch (catchErr: unknown) {
+      if (catchErr instanceof Error) {
+        setErrorStr(catchErr.message);
       } else {
         setErrorStr('Unknown error');
       }
