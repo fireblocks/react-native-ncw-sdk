@@ -8,11 +8,11 @@ def $RNNCWSDK.post_install(installer)
   # add SPM dependency
   project = installer.pods_project
   # dev 9
-  url =  "git@github.com:fireblocks/ncw-ios-sdk-dev.git"
-  product_name = "FireblocksDev"
+  # url =  "git@github.com:fireblocks/ncw-ios-sdk-dev.git"
+  # product_name = "FireblocksDev"
   # sandbox
-  #   url =  "https://github.com/fireblocks/ncw-ios-sdk.git"
-  # product_name = "FireblocksSDK"
+    url =  "https://github.com/fireblocks/ncw-ios-sdk.git"
+  product_name = "FireblocksSDK"
   requirement = { :kind => "upToNextMajorVersion", :minimumVersion => "2.5.1" }
 
   pkg_class = Xcodeproj::Project::Object::XCRemoteSwiftPackageReference

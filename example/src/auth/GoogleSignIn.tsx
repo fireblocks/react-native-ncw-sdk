@@ -61,10 +61,9 @@ export async function onGoogleButtonPress() {
 export async function getGoogleDriveCredentials() {
   const user = await GoogleSignin.getCurrentUser();
   const scopes = user?.scopes ?? [];
-
   if (!scopes.includes(DRIVE_APPDATA)) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    // const ret = await GoogleSignin.addScopes({ scopes: [DRIVE_APPDATA] });
+    const ret = await GoogleSignin.addScopes({ scopes: [DRIVE_APPDATA] });
   }
   const tokens = await GoogleSignin.getTokens();
   return tokens.accessToken;

@@ -6,10 +6,7 @@
 //
 
 import Foundation
-// dev9:
-import FireblocksDev 
-// sandbox:
-// import FireblocksSDK
+import FireblocksSDK
 import React
 
 struct BridgeError: LocalizedError {
@@ -92,10 +89,7 @@ class DeviceAdapter : KeyStorageDelegate, MessageHandlerDelegate, EventHandlerDe
     
     // EventHandlerDelegate
 
-    //dev9: event: FireblocksDev.FireblocksEvent 
-    //sandbox: event: FireblocksSDK.FireblocksEvent
-
-    func onEvent(event: FireblocksDev.FireblocksEvent) {
+    func onEvent(event: FireblocksSDK.FireblocksEvent) {
         func emitSDKEvent(body: [String: Any]) {
             ReactNativeNcwSdk.emitter.sendEvent(withName: "sdk_event", body: body)
         }
@@ -276,6 +270,14 @@ class ReactNativeNcwSdk : RCTEventEmitter {
         resolve("ok")
     }
     
+    // private func printDocumentsDirectory() {
+    //     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    //     let documentsDirectory = paths[0]
+    //     print(documentsDirectory.absoluteString)
+    //     print("XXXXXXXX")
+    // }
+
+
     @objc
     func initialize(_ deviceId: String, withEnv env: String, withResolve resolve: RCTPromiseResolveBlock, withReject reject: RCTPromiseRejectBlock) {
         do {
@@ -287,14 +289,11 @@ class ReactNativeNcwSdk : RCTEventEmitter {
             
             print("initializing Fireblocks, deiviceId:", deviceId)
             let adapter = DeviceAdapter(deviceId: deviceId)
-            // dev9:
-            let opts: FireblocksOptions = FireblocksOptions(env: FireblocksDev.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
-            // sandbox:
-            // let opts: FireblocksOptions = FireblocksOptions(env: FireblocksSDK.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
+            let opts: FireblocksOptions = FireblocksOptions(env: FireblocksSDK.FireblocksEnvironment(rawValue: env)!, eventHandlerDelegate: adapter, logLevel: .debug)
             try Fireblocks.initialize(deviceId: deviceId, messageHandlerDelegate: adapter, keyStorageDelegate: adapter, fireblocksOptions: opts)
             
             print("initialized Fireblocks successfully, deiviceId:", deviceId)
-            
+            // printDocumentsDirectory()
             ReactNativeNcwSdk.adapters[deviceId] = adapter
             resolve(nil)
         } catch let err {

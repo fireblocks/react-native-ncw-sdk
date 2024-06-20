@@ -27,8 +27,8 @@ export class FirebaseAuthManager implements IAuthManager {
         await onGoogleButtonPress();
         break;
       case 'APPLE':
-      // TODO: @invertase/react-native-apple-authentication
-      // break;
+        // TODO: @invertase/react-native-apple-authentication
+        break;
       default:
         throw new Error('Unsupported provider');
     }
