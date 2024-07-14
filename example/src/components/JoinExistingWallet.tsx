@@ -1,23 +1,30 @@
-import React from "react";
+import React from 'react';
 
-import { useAppStore } from "../AppStore";
-import type { IActionButtonProps } from "./ui/ActionButton";
-import { Card } from "./ui/Card";
-import { Copyable } from "./ui/Copyable";
-import { ENV_CONFIG } from "../env_config";
-import { QRDialog } from "./ui/QRDialog";
-import { encode } from "js-base64";
-import { Button, Text, View } from "react-native";
-import { Row, Table } from "react-native-reanimated-table";
-import { Bar } from "react-native-progress";
-import Svg, { Path } from "react-native-svg";
-import type { TKeyStatus } from "@fireblocks/react-native-ncw-sdk";
+import { useAppStore } from '../AppStore';
+import type { IActionButtonProps } from './ui/ActionButton';
+import { Card } from './ui/Card';
+import { Copyable } from './ui/Copyable';
+import { ENV_CONFIG } from '../env_config';
+import { QRDialog } from './ui/QRDialog';
+import { encode } from 'js-base64';
+import { Button, Text, View } from 'react-native';
+import { Row, Table } from 'react-native-reanimated-table';
+import { Bar } from 'react-native-progress';
+import Svg, { Path } from 'react-native-svg';
+import type { TKeyStatus } from '@fireblocks/react-native-ncw-sdk';
 
 export const JoinExistingWallet: React.FC = () => {
   const [err, setErr] = React.useState<string | null>(null);
   const [isJoinInProgress, setIsJoinInProgress] = React.useState(false);
-  const [joinExistingWalletResult, setJoinExistingWalletResult] = React.useState<string | null>(null);
-  const { keysStatus, joinExistingWallet, addDeviceRequestId, stopJoinExistingWallet, loggedUser } = useAppStore();
+  const [joinExistingWalletResult, setJoinExistingWalletResult] =
+    React.useState<string | null>(null);
+  const {
+    keysStatus,
+    joinExistingWallet,
+    addDeviceRequestId,
+    stopJoinExistingWallet,
+    loggedUser,
+  } = useAppStore();
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const onOpenModal = () => setIsModalOpen(true);
@@ -29,16 +36,16 @@ export const JoinExistingWallet: React.FC = () => {
     setIsJoinInProgress(true);
     try {
       await joinExistingWallet();
-      setJoinExistingWalletResult("Success");
+      setJoinExistingWalletResult('Success');
       setIsJoinInProgress(false);
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErr(err.message);
+    } catch (catchErr: unknown) {
+      if (catchErr instanceof Error) {
+        setErr(catchErr.message);
       } else {
-        if (typeof err === "string") {
-          setErr(err);
+        if (typeof catchErr === 'string') {
+          setErr(catchErr);
         } else {
-          setErr("Unknown Error");
+          setErr('Unknown Error');
         }
       }
     } finally {
@@ -47,33 +54,36 @@ export const JoinExistingWallet: React.FC = () => {
   };
 
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
+  const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
+
   const statusToProgress = (status: TKeyStatus | null) => {
     switch (status) {
-      case "INITIATED":
+      case 'INITIATED':
         return 7;
-      case "REQUESTED_SETUP":
+      case 'REQUESTED_SETUP':
         return 32;
-      case "SETUP":
+      case 'SETUP':
         return 53;
-      case "SETUP_COMPLETE":
+      case 'SETUP_COMPLETE':
         return 72;
-      case "READY":
+      case 'READY':
         return 100;
       default:
         return 0;
     }
   };
-  const secP256K1Ready = secP256K1Status === "READY";
+
+  // const secP256K1Ready = secP256K1Status === 'READY';
 
   const generateAction: IActionButtonProps = {
-    label: "Join",
+    label: 'Join',
     action: doJoinExistingWallet,
     isDisabled: false,
     isInProgress: isJoinInProgress,
   };
 
   const stopAction: IActionButtonProps = {
-    label: "Stop the process",
+    label: 'Stop the process',
     action: stopJoinExistingWallet,
   };
 
@@ -84,38 +94,43 @@ export const JoinExistingWallet: React.FC = () => {
   }
 
   const qrCodeValue = encode(
-    `{"email":"${loggedUser?.email ?? "not available"}","platform":"Web","requestId":"${addDeviceRequestId}"}`,
+    `{"email":"${loggedUser?.email ?? 'not available'}","platform":"Web","requestId":"${addDeviceRequestId}"}`
   );
 
   return (
     <Card title="Join Existing Wallet" actions={actions}>
-       <View>
+      <View>
         <Table>
+          <Row data={['Algorithm', 'Status', 'Progress']} />
           <Row
             data={[
-              "Algorithm",
-              "Status",
-              "Progress",
-            ]}>
-          </Row>
-          <Row data={[
-            "ECDSA SECP256K1",
-            secP256K1Status,
-            statusToProgress(secP256K1Status),
-          ]}>
-          </Row>
+              'ECDSA SECP256K1',
+              secP256K1Status,
+              statusToProgress(secP256K1Status),
+            ]}
+          />
+          <Row
+            data={[
+              'EDDSA ED25519',
+              ed25519Status,
+              statusToProgress(ed25519Status),
+            ]}
+          />
         </Table>
-        <Bar progress={statusToProgress(secP256K1Status)/100} width={null} />
+        <Text>ECDSA SECP256K1:</Text>
+        <Bar progress={statusToProgress(secP256K1Status) / 100} width={null} />
+        <Text>EDDSA ED25519:</Text>
+        <Bar
+          progress={statusToProgress(ed25519Status) / 100}
+          width={null}
+        />{' '}
       </View>
       {joinExistingWalletResult && (
         <Text>Result: {joinExistingWalletResult}</Text>
       )}
       {err && (
         <View>
-          <Svg
-            fill="none"
-            viewBox="0 0 24 24"
-          >
+          <Svg fill="none" viewBox="0 0 24 24">
             <Path
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -134,7 +149,11 @@ export const JoinExistingWallet: React.FC = () => {
           </View>
           <View>
             <Button title="Show QR" onPress={onOpenModal} />
-            <QRDialog qrCodeValue={qrCodeValue} isOpen={isModalOpen} onClose={onCloseModal} />
+            <QRDialog
+              qrCodeValue={qrCodeValue}
+              isOpen={isModalOpen}
+              onClose={onCloseModal}
+            />
           </View>
         </View>
       )}

@@ -1,7 +1,7 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import Clipboard from '@react-native-clipboard/clipboard';
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path } from 'react-native-svg';
 
 function writeToClipboard(value: string) {
   Clipboard.setString(value);
@@ -9,22 +9,22 @@ function writeToClipboard(value: string) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
+    flexDirection: 'row',
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   icon: {
     margin: 5,
     padding: 5,
-    color: "black",
+    color: 'black',
     width: 20,
     height: 20,
   },
   text: {
-    fontWeight: "500",
+    fontWeight: '500',
     fontSize: 14,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
 
@@ -34,7 +34,7 @@ export const Copyable: React.FC<{ value: string }> = ({ value }) => {
   };
 
   const clipboardIcon = (
-    <Svg  
+    <Svg
       onPress={doCopy}
       style={styles.icon}
       fill="none"

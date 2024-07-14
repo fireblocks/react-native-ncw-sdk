@@ -1,6 +1,10 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { IAuthManager, IUser } from "./IAuthManager";
-import { getGoogleDriveCredentials, onGoogleButtonPress, onGoogleSignout } from "./GoogleSignIn";
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
+import type { IAuthManager, IUser } from './IAuthManager';
+import {
+  getGoogleDriveCredentials,
+  onGoogleButtonPress,
+  onGoogleSignout,
+} from './GoogleSignIn';
 
 export class FirebaseAuthManager implements IAuthManager {
   private _loggedUser: FirebaseAuthTypes.User | null = null;
@@ -16,17 +20,17 @@ export class FirebaseAuthManager implements IAuthManager {
     return getGoogleDriveCredentials();
   }
 
-  public async login(provider: "GOOGLE" | "APPLE"): Promise<void> {
+  public async login(provider: 'GOOGLE' | 'APPLE'): Promise<void> {
     // let authProvider: AuthProvider;
     switch (provider) {
-      case "GOOGLE":
+      case 'GOOGLE':
         await onGoogleButtonPress();
         break;
-      case "APPLE":
+      case 'APPLE':
         // TODO: @invertase/react-native-apple-authentication
-        // break;
+        break;
       default:
-        throw new Error("Unsupported provider");
+        throw new Error('Unsupported provider');
     }
 
     // const unsubscribe = this._auth.onAuthStateChanged((user) => {
@@ -45,7 +49,7 @@ export class FirebaseAuthManager implements IAuthManager {
 
   public getAccessToken(): Promise<string> {
     if (!this._loggedUser) {
-      throw new Error("User is not logged in");
+      throw new Error('User is not logged in');
     }
 
     return this._loggedUser.getIdToken();

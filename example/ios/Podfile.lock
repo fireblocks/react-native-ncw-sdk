@@ -63,7 +63,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - PromisesObjC (~> 2.1)
-  - fireblocks-react-native-ncw-sdk (1.0.0):
+  - fireblocks-react-native-ncw-sdk (1.0.1):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1545,7 +1545,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 28045c1560a2600d284b9c45a904fe322dc890b6
   FirebaseCoreInternal: bca337352024b18424a61e478460547d46c4c753
   FirebaseInstallations: 763814908793c0da14c18b3dcffdec71e29ed55e
-  fireblocks-react-native-ncw-sdk: 867882b558c0a3ef1c7a79d2e21af7db40a5a88e
+  fireblocks-react-native-ncw-sdk: 2d2ea406e10daf0bb129212af21ae94e858a039c
   Flipper: c7a0093234c4bdd456e363f2f19b2e4b27652d44
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 2dc99b02f658daf147069aad9dbd29d8feb06d30

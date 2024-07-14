@@ -1,4 +1,7 @@
 {
+  "exclude": [
+    "example"
+  ],
   "compilerOptions": {
     "rootDir": ".",
     "paths": {

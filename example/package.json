@@ -32,6 +32,7 @@
     "react-qr-code": "^2.0.12",
     "rn-secure-storage": "^3.0.1",
     "socket.io-client": "^4.7.4",
+    "tsl-apple-cloudkit": "^0.2.31",
     "zustand": "^4.5.0"
   },
   "devDependencies": {

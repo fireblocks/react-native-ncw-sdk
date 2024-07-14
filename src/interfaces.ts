@@ -10,7 +10,7 @@ import type {
   TMPCAlgorithm,
   TReleaseSecureStorageCallback,
   TTransactionSignatureStatus,
-} from "./types";
+} from './types';
 
 export interface IFireblocksNCW {
   dispose(): Promise<void>;
@@ -20,14 +20,30 @@ export interface IFireblocksNCW {
   signTransaction(txId: string): Promise<ITransactionSignature>;
   stopInProgressSignTransaction(): Promise<void>;
   getInProgressSigningTxId(): Promise<string | null>;
-  backupKeys(passphrase: string, passphraseId: string): Promise<IKeyBackupResult[]>;
+  backupKeys(
+    passphrase: string,
+    passphraseId: string
+  ): Promise<IKeyBackupResult[]>;
   recoverKeys(passphraseResolver: IPassphraseResolver): Promise<void>;
-  requestJoinExistingWallet(joinWalletResolver: IJoinWalletHandler): Promise<Set<IKeyDescriptor>>;
-  approveJoinWalletRequest(requestId: string): Promise<Set<IJoinWalletDescriptor>>;
+  requestJoinExistingWallet(
+    joinWalletResolver: IJoinWalletHandler
+  ): Promise<Set<IKeyDescriptor>>;
+  approveJoinWalletRequest(
+    requestId: string
+  ): Promise<Set<IJoinWalletDescriptor>>;
   stopJoinWallet(): void;
   takeover(): Promise<IFullKey[]>;
-  exportFullKeys(chaincode: string, cloudKeyShares: Map<string, string[]>): Promise<IFullKey[]>;
-  deriveAssetKey(extendedPrivateKey: string, coinType: number, account: number, change: number, index: number): string;
+  exportFullKeys(
+    chaincode: string,
+    cloudKeyShares: Map<string, string[]>
+  ): Promise<IFullKey[]>;
+  deriveAssetKey(
+    extendedPrivateKey: string,
+    coinType: number,
+    account: number,
+    change: number,
+    index: number
+  ): string;
   getKeysStatus(): Promise<Record<TMPCAlgorithm, IKeyDescriptor>>;
   getPhysicalDeviceId(): string;
 }
@@ -83,12 +99,12 @@ export interface IKeyTakeover {
 }
 
 export interface IKeyDescriptorChangedEvent {
-  type: "key_descriptor_changed";
+  type: 'key_descriptor_changed';
   keyDescriptor: IKeyDescriptor;
 }
 
 export interface IKeyTakeoverChangedEvent {
-  type: "key_takeover_changed";
+  type: 'key_takeover_changed';
   keyTakeover: IKeyTakeover;
 }
 
@@ -100,7 +116,7 @@ export interface IJoinWalletDescriptor {
 }
 
 export interface IJoinWalletEvent {
-  type: "join_wallet_descriptor";
+  type: 'join_wallet_descriptor';
   joinWalletDescriptor: IJoinWalletDescriptor;
 }
 
@@ -110,21 +126,21 @@ export interface ITransactionSignature {
 }
 
 export interface ITransactionSignatureChangedEvent {
-  type: "transaction_signature_changed";
+  type: 'transaction_signature_changed';
   transactionSignature: ITransactionSignature;
 }
 
 export interface IKeyBackupEvent {
-  type: "keys_backup";
+  type: 'keys_backup';
   keysBackup: IKeyBackupResult[];
 }
 
 export interface IKeyRecoveryEvent {
-  type: "keys_recovery";
+  type: 'keys_recovery';
   keyDescriptor: IKeyDescriptor;
 }
 
 export interface IKeyBackupResult {
   keyId: string;
-  keyBackupStatus: "SUCCESS" | "ERROR";
+  keyBackupStatus: 'SUCCESS' | 'ERROR';
 }
