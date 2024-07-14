@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [1.0.1](https://github.com/fireblocks/react-native-ncw-sdk/compare/1.0.0...1.0.1)
+
+> 18 June 2024
+
+- fixing app crash [`#5`](https://github.com/fireblocks/react-native-ncw-sdk/pull/5)
+
 ### [1.0.0](https://github.com/fireblocks/react-native-ncw-sdk/compare/0.1.7...1.0.0)
 
 > 2 May 2024

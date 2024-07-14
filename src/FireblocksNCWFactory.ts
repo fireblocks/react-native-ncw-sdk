@@ -194,19 +194,15 @@ function registerEvents({
           await ReactNativeNcwSdk.handleResponse({
             opId,
             deviceId,
-            data: { error: e.message },
+            error: e.message,
           });
         } else if (e instanceof String || typeof e === 'string') {
-          await ReactNativeNcwSdk.handleResponse({
-            opId,
-            deviceId,
-            data: { error: e },
-          });
+          await ReactNativeNcwSdk.handleResponse({ opId, deviceId, error: e });
         } else {
           await ReactNativeNcwSdk.handleResponse({
             opId,
             deviceId,
-            data: { error: 'unkown error' },
+            error: 'unkown error',
           });
         }
       }
