@@ -7,12 +7,13 @@ import { ApiService, type ITransactionData, type IWalletAsset, type TPassphraseL
 import { PasswordEncryptedLocalStorage } from "./services/PasswordEncryptedLocalStorage";
 import type { IAuthManager } from "./auth/IAuthManager";
 import { FirebaseAuthManager } from "./auth/FirebaseAuthManager";
-import { decode, version } from "js-base64";
+import { decode } from "js-base64";
 import type { IEventsHandler, IFireblocksNCW, IJoinWalletEvent, IKeyBackupEvent, IKeyDescriptor, IKeyRecoveryEvent, IMessagesHandler } from "@fireblocks/react-native-ncw-sdk";
 import type { TEvent, TMPCAlgorithm, TEnv } from "@fireblocks/react-native-ncw-sdk";
 import { FireblocksNCWFactory } from "@fireblocks/react-native-ncw-sdk";
 import { ACCESSIBLE, ACCESS_CONTROL, type Options, getGenericPassword, setGenericPassword } from "react-native-keychain";
 import { randomPassPhrase } from "./services/randomPassPhrase";
+import packageJson from '../../package.json';
 
 export type TAsyncActionStatus = "not_started" | "started" | "success" | "failed";
 export type TFireblocksNCWStatus = "sdk_not_ready" | "initializing_sdk" | "sdk_available" | "sdk_initialization_failed";
@@ -38,7 +39,7 @@ export const useAppStore = create<IAppState>()((set, get) => {
   };
 
   return {
-    fireblocksNCWSdkVersion: version,
+    fireblocksNCWSdkVersion: packageJson.version,
     automateInitialization: ENV_CONFIG.AUTOMATE_INITIALIZATION,
     joinExistingWalletMode: false,
     loggedUser: authManager.loggedUser,
@@ -529,7 +530,7 @@ export const useAppStore = create<IAppState>()((set, get) => {
       }
       // TODO: consolidate
       // const ALGORITHMS = new Set<TMPCAlgorithm>(["MPC_CMP_ECDSA_SECP256K1"]);
-      const ALGORITHMS = new Set<TMPCAlgorithm>(["MPC_ECDSA_SECP256K1"]);
+      const ALGORITHMS = new Set<TMPCAlgorithm>(["MPC_ECDSA_SECP256K1","MPC_EDDSA_ED25519"]);
       await fireblocksNCW.generateMPCKeys(ALGORITHMS);
     },
     stopMpcDeviceSetup: async () => {

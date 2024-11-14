@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Clipboard from '@react-native-clipboard/clipboard';
 import Svg, { Path } from "react-native-svg";
+import { Alert } from "react-native";
+import { Platform } from "react-native";
 
 function writeToClipboard(value: string) {
   Clipboard.setString(value);
@@ -31,6 +33,9 @@ const styles = StyleSheet.create({
 export const Copyable: React.FC<{ value: string }> = ({ value }) => {
   const doCopy = () => {
     writeToClipboard(value);
+    if (Platform.OS === 'ios') {
+      Alert.alert("Copied to Clipboard", "The text has been copied to your clipboard.");
+    }
   };
 
   const clipboardIcon = (

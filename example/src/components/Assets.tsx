@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { useAppStore } from "../AppStore";
-import { AssetRow } from "./AssetRow";
 // import { Autocomplete } from "./ui/Autocomplete";
 import { Card } from "./ui/Card";
 import { IActionButtonProps } from "./ui/ActionButton";
@@ -8,6 +7,7 @@ import { Row, Table } from "react-native-reanimated-table";
 import { Button, Text, View } from "react-native";
 import { AutocompleteDropdown, AutocompleteDropdownRef } from "react-native-autocomplete-dropdown";
 import { SvgUri } from "react-native-svg";
+import { Copyable } from "./ui/Copyable";
 
 export const Assets: React.FC = () => {
   const { accounts, refreshAccounts, addAsset, refreshSupportedAssets, supportedAssets } = useAppStore();
@@ -67,17 +67,23 @@ export const Assets: React.FC = () => {
       {hasAccounts &&
         accounts.map((account, index) => (
           <View key={`asset_account_${index}`}>
-            <Table key={`account${index}`}>
+          <Table key={`account${index}`}>
               <Row data={[
                 "Asset",
                 "Name",
-                "Type",
                 "Address",
                 "Balance"
               ]} />
-              {Object.entries(account).map(([assetId, assetInfo]) =>
-                <Row key={`asset_account_row_${index}_${assetId}`} data={[assetId, assetInfo.asset.name, assetInfo.asset.type, assetInfo.address?.address, assetInfo.balance?.total]} />
-              )}
+              {Object.entries(account).map(([assetId, assetInfo]) => (
+                <React.Fragment key={`asset_account_row_${index}_${assetId}`}>
+                  <Row data={[
+                  assetId,
+                  assetInfo.asset.name,
+                  <Copyable value={assetInfo.address?.address ?? ""} />,
+                  <Text style={{ textAlign: 'center' }}>{assetInfo.balance?.total}</Text>
+                  ]} />
+                </React.Fragment>
+              ))}
             </Table>
             <View style={{
               justifyContent: "space-between",

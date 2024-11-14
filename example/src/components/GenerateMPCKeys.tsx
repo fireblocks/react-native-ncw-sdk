@@ -60,6 +60,8 @@ export const GenerateMPCKeys: React.FC = () => {
   };
 
   const secP256K1Status = keysStatus?.MPC_ECDSA_SECP256K1?.keyStatus ?? null;
+  const ed25519Status = keysStatus?.MPC_EDDSA_ED25519?.keyStatus ?? null;
+
   const statusToProgress = (status: TKeyStatus | null) => {
     switch (status) {
       case "INITIATED":
@@ -76,12 +78,13 @@ export const GenerateMPCKeys: React.FC = () => {
         return 0;
     }
   };
-  const secP256K1Ready = secP256K1Status === "READY";
 
+  const secP256K1Ready = secP256K1Status === "READY";
+  const ed25519Ready = ed25519Status === "READY";
   const generateAction: IActionButtonProps = {
     label: "Generate MPC Keys",
     action: doGenerateMPCKeys,
-    isDisabled: isGenerateInProgress || secP256K1Ready,
+    isDisabled: isGenerateInProgress || (secP256K1Ready && ed25519Ready),
     isInProgress: isGenerateInProgress,
   };
 
@@ -95,7 +98,7 @@ export const GenerateMPCKeys: React.FC = () => {
   const approveJoinWalletAction: IActionButtonProps = {
     label: "Approve Join Wallet",
     action: () => setShowScanQr(true),
-    isDisabled: (isStopInProgress || isGenerateInProgress) && secP256K1Ready,
+    isDisabled: (isStopInProgress || isGenerateInProgress) && (secP256K1Ready || ed25519Ready),
   };
   const stopApproveWalletAction: IActionButtonProps = {
     label: "Stop Approve Join Wallet",
@@ -119,11 +122,21 @@ export const GenerateMPCKeys: React.FC = () => {
             "ECDSA SECP256K1",
             secP256K1Status ?? "N/A",
            ]}/>
+          <Row data={[
+            "EDDSA_ED25519",
+            ed25519Status ?? "N/A",
+           ]}/>
         </Table>
       </View>
       { secP256K1Status && (
         <View>
           <Bar progress={statusToProgress(secP256K1Status)/100} width={null} />
+        </View>
+      )}
+      <View style={{ height: 10 }} />
+      { ed25519Status && (
+        <View>
+          <Bar progress={statusToProgress(ed25519Status)/100} width={null} />
         </View>
       )}
       { generateMPCKeysResult && (
