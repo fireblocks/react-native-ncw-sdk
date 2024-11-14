@@ -61,7 +61,10 @@ export const DeriveAssetsList: React.FC<IProps> = ({ privateKey }) => {
     <Table>
       <Row data={["Asset", "Name", "Derrived Key"]}></Row>
         {assetsListItems.map((assetListItem) => (
-          <Row key={`derrived_${assetListItem.id}`} data={[assetListItem.assetId, assetListItem.name, assetListItem.derivedAssetKey]} />
+          <Row key={`derrived_${assetListItem.id}`} data={[
+            assetListItem.assetId,
+            assetListItem.name,
+            <Copyable value={assetListItem.derivedAssetKey} />]} />
           // <tr key={assetListItem.id}>
           //   <td className="flex items-center gap-2">
           //     {assetListItem.iconUrl ? <img src={assetListItem.iconUrl} className="w-8 h-8"></img> : missingIcon}
