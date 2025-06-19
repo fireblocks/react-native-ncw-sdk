@@ -211,11 +211,12 @@ class DeviceAdapter : KeyStorageDelegate, MessageHandlerDelegate, EventHandlerDe
         print("Emitting handleOutgoingMessage, deiviceId:", deviceId)
         
         sendOperation(eventName: "outgoingMessage", params: [ "message": payload ], responseHandler: { (dict: NSDictionary) -> () in
-            guard let data = dict["data"] as! String? else {
+            guard let dataStr = dict["data"] as! String? else {
                 error("failed to get data")
                 return
             }
-            response(data)
+            
+            response(dataStr)
         })
     }
 }
