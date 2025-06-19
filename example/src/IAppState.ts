@@ -1,5 +1,5 @@
-import { TAsyncActionStatus, TFireblocksNCWStatus } from "./AppStore";
-import {
+import type { TAsyncActionStatus, TFireblocksNCWStatus } from './AppStore';
+import type {
   IAssetAddress,
   IAssetBalance,
   ICreateWeb3ConnectionResponse,
@@ -7,10 +7,10 @@ import {
   IWalletAsset,
   IWeb3Session,
   TPassphraseLocation,
-} from "./services/ApiService";
-import { IUser } from "./auth/IAuthManager";
+} from './services/ApiService';
+import type { IUser } from './auth/IAuthManager';
 
-import type { TMPCAlgorithm, IFullKey, IKeyDescriptor } from "@fireblocks/react-native-ncw-sdk";
+import type { TMPCAlgorithm, IFullKey, IKeyDescriptor } from '@fireblocks/react-native-ncw-sdk';
 
 export interface IAssetInfo {
   asset: IWalletAsset;
@@ -25,7 +25,7 @@ export interface IPassphraseInfo {
 
 type TAccount = Record<string, IAssetInfo>;
 type TSupportedAssets = Record<string, IWalletAsset>;
-export type TAppMode = "SIGN_IN" | "JOIN" | null;
+export type TAppMode = 'SIGN_IN' | 'JOIN' | null;
 export type TPassphrases = Record<string, IPassphraseInfo>;
 
 export interface IBackupInfo {
@@ -40,7 +40,7 @@ export interface INewTransactionData {
   assetId: string;
   amount?: string;
   destAddress?: string;
-  feeLevel?: "LOW" | "MEDIUM" | "HIGH";
+  feeLevel?: 'LOW' | 'MEDIUM' | 'HIGH';
   estimateFee?: boolean;
 }
 
@@ -71,7 +71,7 @@ export interface IAppState {
   initAppStore: () => void;
   disposeAppStore: () => void;
   getGoogleDriveCredentials: () => Promise<string>;
-  login(provider: "GOOGLE" | "APPLE"): Promise<void>;
+  login(provider: 'GOOGLE' | 'APPLE'): Promise<void>;
   setAppMode: (mode: TAppMode) => void;
   logout: () => Promise<void>;
   clearSDKStorage: () => Promise<void>;
