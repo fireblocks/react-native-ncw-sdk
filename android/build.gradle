@@ -8,7 +8,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "com.android.tools.build:gradle:7.2.1"
+    classpath "com.android.tools.build:gradle:8.1.0"
     // noinspection DifferentKotlinGradleVersion
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
   }
@@ -100,6 +100,13 @@ repositories {
   mavenCentral()
   google()
 
+  // Add React Native repository
+  maven {
+    url "$rootDir/../node_modules/react-native/android"
+  }
+  // Add Jitpack repository
+  maven { url "https://jitpack.io" }
+
    maven {
        url = "https://maven.fireblocks.io/android-sdk/maven"
       name = "android-sdk"
@@ -114,10 +121,8 @@ repositories {
 def kotlin_version = getExtOrDefault("kotlinVersion")
 
 dependencies {
-  // For < 0.71, this will be from the local maven repo
-  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
-  //noinspection GradleDynamicVersion
-  implementation "com.facebook.react:react-native:+"
+  // Use a specific version of React Native instead of dynamic "+"
+  implementation "com.facebook.react:react-native:0.72.0"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation "com.fireblocks.sdk:ncw:2.9.2"
 }

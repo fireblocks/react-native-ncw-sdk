@@ -7,6 +7,7 @@ module.exports = {
       root: path.join(__dirname, '..'),
     },
   },
+  reactNativeDir: path.join(__dirname, '../node_modules/react-native'),
   project: {
     android: {
       unstable_reactLegacyComponentNames: ['CameraView'],

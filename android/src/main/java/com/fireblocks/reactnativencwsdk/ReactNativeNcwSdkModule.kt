@@ -283,11 +283,12 @@ class ReactNativeNcwSdkModule internal constructor(context: ReactApplicationCont
                   if (response.hasKey("error")) {
                     errorCallback.invoke(response.getString("error"))
                   } else if (response.hasKey("data")) {
+                    val data = response.getString("data")
                     Log.d(
                       TAG,
-                      "Handle Outgoing Message has data: " + response.getString("data")!!.length
+                      "Handle Outgoing Message has data: " + data!!.length
                     )
-                    responseCallback.invoke(response.getString("data"))
+                    responseCallback.invoke(data)
                   } else {
                     // errorCallback.invoke("Unknown response");
                   }
