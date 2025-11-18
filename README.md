@@ -1,3 +1,7 @@
+# Note: As of August 2025, the React Native SDK is deprecated. It is no longer supported and maintained by Fireblocks.
+# You can choose to use this code as reference if you wish, yet there is no guarantee the packages used are updated and will work as suggested.
+
+
 # @fireblocks/react-native-ncw-sdk
 
 Fireblocks NCW SDK bridge for React Native
